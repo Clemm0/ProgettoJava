@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class MapBuilder extends JPanel {
     private int[][] map;
-    private final int TILE_SIZE = 20; 
+    private final int TILE_SIZE = 20;
 
     public MapBuilder(String mapFilePath) {
         loadMap(mapFilePath);
@@ -21,7 +21,7 @@ public class MapBuilder extends JPanel {
             String line;
             int rows = 0;
             int cols = 0;
-            
+
             while ((line = reader.readLine()) != null) {
                 cols = Math.max(cols, line.length());
                 rows++;
@@ -46,20 +46,33 @@ public class MapBuilder extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (map == null) return;
+        if (map == null)
+            return;
 
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[row].length; col++) {
                 switch (map[row][col]) {
                     case 0 -> g.setColor(Color.WHITE); // Walkable space
-                    case 1 -> g.setColor(Color.GRAY);  // Wall
-                    case 2 -> g.setColor(Color.BLUE);  // Water
+                    case 1 -> g.setColor(Color.GRAY); // Wall
+                    case 2 -> g.setColor(Color.BLUE); // Water
                     case 3 -> g.setColor(new Color(139, 69, 19)); // Door
                     case 4 -> g.setColor(Color.YELLOW); // Key
-                    case 5 -> g.setColor(Color.RED);    // Player
+                    case 5 -> g.setColor(Color.RED); // Player
                 }
                 g.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
+        }
+    }
+
+    public void updateMapWithPlayer(Player player) {
+        map[player.getY()][player.getX()] = 5; 
+        repaint();
+    }
+
+    public void updateMapWithMovable(Movable movable) {
+        if (movable != null) {
+            map[movable.getY()][movable.getX()] = movable.getMapRepresentation(); 
+            repaint();
         }
     }
 }

@@ -1,14 +1,17 @@
 package ProgettoJava;
 
-public class Water extends Placed {
-    Water(int x, int y) {
+public class Water extends Immovable {
+
+    public Water(int x, int y) {
         super(x, y);
-        //image = "src/main/resources/water.png";
-        //loadImage();
+        setImage("src/main/resources/water.png");
     }
 
-    //make the water stop the player
+    public boolean sinksMovable() {
+        return true;
+    }
 
-    //make the water sink movable objects when pushed on it
-    
+    public boolean stopsPlayer() {
+        return true;
+    }
 }
