@@ -1,14 +1,17 @@
 package ProgettoJava;
 
-public class Wall extends Placed {
-    Wall(int x, int y){
+public class Wall extends Immovable {
+
+    public Wall(int x, int y) {
         super(x, y);
-        //image = "src/main/resources/wall.png";
-        //loadImage();
+        setImage("src/main/resources/wall.png");
     }
 
-    //make the wall stop the player
+    public boolean stopsPlayer() {
+        return true;
+    }
 
-    //make the wall stop movable objects when pushed on it
-    
+    public boolean stopsMovable() {
+        return true;
+    }
 }

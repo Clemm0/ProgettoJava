@@ -117,4 +117,33 @@ public final class Player {
         move(direction);
         updateMapFile(filePath);
     }
+    
+    public boolean canMoveTo(int[][] map, int newX, int newY) {
+        return map[newX][newY] == 0; // Example: Check if the target cell is walkable
+    }
+
+    public void interactWithObject(Placed object, int[][] map) {
+        if (object instanceof Movable movable) {
+            int newX = x, newY = y;
+            switch (direction) {
+                case 'W' -> newY -= 1;
+                case 'A' -> newX -= 1;
+                case 'S' -> newY += 1;
+                case 'D' -> newX += 1;
+                default -> {
+                    System.out.println("Invalid direction for moving.");
+                    return;
+                }
+            }
+
+            if (canMoveTo(map, newX, newY)) {
+                movable.setPosition(newX, newY);
+                System.out.println("Moved the object!");
+            } else {
+                System.out.println("Cannot move the object to the desired location.");
+            }
+        } else {
+            System.out.println("This object cannot be moved.");
+        }
+    }
 }
