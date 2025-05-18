@@ -17,6 +17,7 @@ public class Test {
         fr.setLocationRelativeTo(null);
         fr.setVisible(true);
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }

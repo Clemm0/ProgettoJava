@@ -31,4 +31,12 @@
   - Ottimizzazione della mappa.
   - Ridotto il rischio di crash e blue/death screen dell’80% (può ancora capitare).
 
+### 18/05
+- **[Clemm0]**
+  - Sistemate le collisioni
+  - Aggiunto il cambio di livello
+  - Adesso le chiavi aprono le porte
+  - La telecamera ci ha abbandonato
+  - Iniziato a scrivere sia una pagina per le impostazioni che un menu principale
+
 ---

@@ -4,10 +4,11 @@ import javax.swing.JPanel;
 
 import Tiles.TileManager;
 import entity.Player;
+import object.SuperObject;
 
 public class GamePanel extends JPanel implements Runnable {
-    final int originalSize = 64;
-    final int scale = 1;
+    final int originalSize = 16;
+    final int scale = 4;
     public final int tileSize = originalSize * scale;
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
@@ -15,11 +16,19 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow;
     final int FPS = 60;
 
-    TileManager tileM = new TileManager(this);
+    public final int maxWorldCol = maxScreenCol;
+    public final int maxWorldRow = maxScreenRow;
+    public final int maxWorldSize = tileSize * maxWorldCol;
+    public final int maxWorldHeight = tileSize * maxWorldRow;
+
+    public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
     public CollisionChecker cChecker = new CollisionChecker(this);
+
+    public AssetSetter aSetter = new AssetSetter(this);
+    public SuperObject[] obj = new SuperObject[10];
 
     public GamePanel() {
         this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
@@ -27,6 +36,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame() {
+        aSetter.setObject();
     }
 
     public void startGameThread() {
@@ -70,6 +83,11 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
         tileM.draw(g2);
+        for (SuperObject obj1 : obj) {
+            if (obj1 != null) {
+                obj1.draw(g2, this);
+            }
+        }
         player.draw(g2);
         g2.dispose();
     }

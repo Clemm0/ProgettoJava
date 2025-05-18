@@ -7,23 +7,35 @@ import javax.imageio.ImageIO;
 
 import Main.GamePanel;
 import Main.KeyHandler;
+import Tiles.TileManager;
+import object.SuperObject;
 
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
+    TileManager tm;
+    int hasKey = 0;
+    public static int level = 1;
+
+    public final int screenX;
+    public final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         solidArea = new Rectangle(gp.tileSize / 8, gp.tileSize / 8, gp.tileSize - gp.tileSize / 4,
                 gp.tileSize - gp.tileSize / 4);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        x = gp.tileSize * 7;
-        y = gp.tileSize * 7;
+        worldX = gp.tileSize * 7;
+        worldY = gp.tileSize * 7;
         speed = 4; // come si fa a far muovere secondo una griglia fissa boh da scoprire
         direction = "right";
     }
@@ -90,29 +102,31 @@ public class Player extends Entity {
                 direction = "right";
             collisionOn = false;
             gp.cChecker.checkTile(this);
+            int objIndex = gp.cChecker.checkObject(this, true);
+            moveObject(objIndex);
             if (collisionOn == false) {
                 switch (direction) {
                     case "up" -> {
-                        y -= speed;
-                        if (y < 0)
-                            y = 0;
+                        worldY -= speed;
+                        if (worldY < 0)
+                            worldY = 0;
                     }
                     case "down" -> {
-                        y += speed;
-                        if (y > gp.screenHeight - gp.tileSize)
-                            y = gp.screenHeight - gp.tileSize;
+                        worldY += speed;
+                        if (worldY > gp.screenHeight - gp.tileSize)
+                            worldY = gp.screenHeight - gp.tileSize;
                         break;
                     }
                     case "left" -> {
-                        x -= speed;
-                        if (x < 0)
-                            x = 0;
+                        worldX -= speed;
+                        if (worldX < 0)
+                            worldX = 0;
                         break;
                     }
                     case "right" -> {
-                        x += speed;
-                        if (x > gp.screenWidth - gp.tileSize)
-                            x = gp.screenWidth - gp.tileSize;
+                        worldX += speed;
+                        if (worldX > gp.screenWidth - gp.tileSize)
+                            worldX = gp.screenWidth - gp.tileSize;
                         break;
                     }
                 }
@@ -131,6 +145,45 @@ public class Player extends Entity {
             }
         } else {
             direction = "still";
+        }
+    }
+
+    public void moveObject(int i){
+        if (i != 999){
+            String objectName = gp.obj[i].name;
+            switch (objectName) {
+                case "Key" -> {
+                    int keyX = gp.obj[i].worldX;
+                    int keyY = gp.obj[i].worldY;
+                    switch (direction) {
+                        case "up" -> keyY -= gp.tileSize;
+                        case "down" -> keyY += gp.tileSize;
+                        case "left" -> keyX -= gp.tileSize;
+                        case "right" -> keyX += gp.tileSize;
+                    }
+
+                    int tileCol = keyX / gp.tileSize;
+                    int tileRow = keyY / gp.tileSize;
+                    boolean canMove = !gp.tileM.tile[gp.tileM.mapTileNum[tileCol][tileRow]].collision;
+
+                    if (canMove) {
+                        gp.obj[i].worldX = keyX;
+                        gp.obj[i].worldY = keyY;
+                        for (int j = 0; j < gp.obj.length; j++) {
+                            SuperObject obj = gp.obj[j];
+                            if (obj != null && "Door".equals(obj.name) && obj.worldX == keyX && obj.worldY == keyY) {
+                                gp.obj[j] = null;
+                                gp.obj[i] = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+                case "Flag" -> {
+                    level++;
+                    //TileManager.setLevel(level);  #devo capire come fare i livelli
+                }
+            }
         }
     }
 
@@ -183,6 +236,6 @@ public class Player extends Entity {
          * }
          */
         image = leftStill;
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

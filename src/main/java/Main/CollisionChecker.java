@@ -10,10 +10,10 @@ public class CollisionChecker {
     }
 
     public boolean checkTile(Entity entity) {
-        int entityLeftX = entity.x + entity.solidArea.x;
-        int entityRightX = entity.x + entity.solidArea.x + entity.solidArea.width;
-        int entityTopY = entity.y + entity.solidArea.y;
-        int entityBottomY = entity.y + entity.solidArea.y + entity.solidArea.height;
+        int entityLeftX = entity.worldX + entity.solidArea.x;
+        int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
+        int entityTopY = entity.worldY + entity.solidArea.y;
+        int entityBottomY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         int entityLeftCol = entityLeftX / gp.tileSize;
         int entityRightCol = entityRightX / gp.tileSize;
@@ -52,5 +52,79 @@ public class CollisionChecker {
             }
         }
         return false;
+    }
+
+    public int checkObject(Entity entity, boolean player) {
+        int index = 999;
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] != null) {
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
+                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+
+                switch (entity.direction) {
+                    case "up" -> {
+                        entity.solidArea.y -= entity.speed;
+                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
+                            if (gp.obj[i].collision == true) {
+                                entity.collisionOn = true;
+                            }
+                            if (player == true) {
+                                index = i;
+                            }
+                        }
+                    }
+                    case "down" -> {
+                        entity.solidArea.y += entity.speed;
+                        if (entity.solidArea.intersects(gp.obj[i].solidArea)){
+                            if (gp.obj[i].collision == true) {
+                                entity.collisionOn = true;
+                            }
+                            if (player == true) {
+                                index = i;
+                            }
+                        }
+                    }
+                    case "left" -> {
+                        entity.solidArea.x -= entity.speed;
+                        if (entity.solidArea.intersects(gp.obj[i].solidArea)){
+                            if (gp.obj[i].collision == true) {
+                                entity.collisionOn = true;
+                            }
+                            if (player == true) {
+                                index = i;
+                            }
+                        }
+                    }
+                    case "right" -> {
+                        entity.solidArea.x += entity.speed;
+                        if (entity.solidArea.intersects(gp.obj[i].solidArea)){
+                            if (gp.obj[i].collision == true) {
+                                entity.collisionOn = true;
+                            }
+                            if (player == true) {
+                                index = i;
+                            }
+                        }
+                    }
+                }
+
+                if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
+                    if (gp.obj[i].collision == true) {
+                        entity.collisionOn = true;
+                    }
+                    if (player == true) {
+                        index = i;
+                    }
+                }
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
+                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+            }
+        }
+        return index;
     }
 }
