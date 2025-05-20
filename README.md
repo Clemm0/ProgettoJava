@@ -39,4 +39,10 @@
   - La telecamera ci ha abbandonato
   - Iniziato a scrivere sia una pagina per le impostazioni che un menu principale
 
+### 19/05
+- **[Clemm0]**
+  - Sistemato lo spostamento a blocchi
+  - Aggiunta musiche
+  - Sistemati problemi con gli assert dove rimanevano alcuni blocchi vuoti senza che si caricavano
+
 ---

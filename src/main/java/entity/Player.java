@@ -7,235 +7,230 @@ import javax.imageio.ImageIO;
 
 import Main.GamePanel;
 import Main.KeyHandler;
-import Tiles.TileManager;
 import object.SuperObject;
 
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
-    TileManager tm;
-    int hasKey = 0;
     public static int level = 1;
+    public int standCounter = 0;
+    boolean moving = false;
 
     public final int screenX;
     public final int screenY;
+
+    private int targetX, targetY;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-        solidArea = new Rectangle(gp.tileSize / 8, gp.tileSize / 8, gp.tileSize - gp.tileSize / 4,
-                gp.tileSize - gp.tileSize / 4);
+
+        int offset = gp.tileSize / 8;
+        solidArea = new Rectangle(offset, offset, gp.tileSize - 2 * offset, gp.tileSize - 2 * offset);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
         setDefaultValues();
         getPlayerImage();
+
+        targetX = worldX;
+        targetY = worldY;
     }
 
     public void setDefaultValues() {
         worldX = gp.tileSize * 7;
         worldY = gp.tileSize * 7;
-        speed = 4; // come si fa a far muovere secondo una griglia fissa boh da scoprire
+        speed = 4;
         direction = "right";
     }
 
     public void getPlayerImage() {
         try {
             leftStill = ImageIO.read(getClass().getResourceAsStream("/res/player/cat/CatStill.png"));
-            /*
-             * upStill =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/UpStill.png"));
-             * downStill =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/DownStill.png"))
-             * ;
-             * rightStill =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/RightStill.png")
-             * );
-             * up1 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Up1.png"));
-             * up2 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Up2.png"));
-             * up3 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Up3.png"));
-             * up4 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Up4.png"));
-             * down1 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Down1.png"));
-             * down2 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Down2.png"));
-             * down3 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Down3.png"));
-             * down4 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Down4.png"));
-             * left1 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Left1.png"));
-             * left2 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Left2.png"));
-             * left3 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Left3.png"));
-             * left4 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Left4.png"));
-             * right1 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Right1.png"));
-             * right2 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Right2.png"));
-             * right3 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Right3.png"));
-             * right4 =
-             * ImageIO.read(getClass().getResourceAsStream("/res/player/cat/Right4.png"));
-             */
+            // ...other image loading...
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-            if (keyH.upPressed)
+        if (!moving) {
+            int nextX = worldX;
+            int nextY = worldY;
+
+            if (keyH.upPressed) {
                 direction = "up";
-            else if (keyH.downPressed)
+                nextY -= gp.tileSize;
+                gp.playSE(3);
+            } else if (keyH.downPressed) {
                 direction = "down";
-            else if (keyH.leftPressed)
+                nextY += gp.tileSize;
+                gp.playSE(3);
+            } else if (keyH.leftPressed) {
                 direction = "left";
-            else if (keyH.rightPressed)
+                nextX -= gp.tileSize;
+                gp.playSE(3);
+            } else if (keyH.rightPressed) {
                 direction = "right";
-            collisionOn = false;
-            gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
-            moveObject(objIndex);
-            if (collisionOn == false) {
-                switch (direction) {
-                    case "up" -> {
-                        worldY -= speed;
-                        if (worldY < 0)
-                            worldY = 0;
-                    }
-                    case "down" -> {
-                        worldY += speed;
-                        if (worldY > gp.screenHeight - gp.tileSize)
-                            worldY = gp.screenHeight - gp.tileSize;
-                        break;
-                    }
-                    case "left" -> {
-                        worldX -= speed;
-                        if (worldX < 0)
-                            worldX = 0;
-                        break;
-                    }
-                    case "right" -> {
-                        worldX += speed;
-                        if (worldX > gp.screenWidth - gp.tileSize)
-                            worldX = gp.screenWidth - gp.tileSize;
+                nextX += gp.tileSize;
+                gp.playSE(3);
+            }
+
+            if (nextX != worldX || nextY != worldY) {
+                collisionOn = false;
+                int oldX = worldX, oldY = worldY;
+                worldX = nextX;
+                worldY = nextY;
+                gp.cChecker.checkTile(this);
+                worldX = oldX;
+                worldY = oldY;
+
+                int objIndex = -1;
+                for (int i = 0; i < gp.obj.length; i++) {
+                    SuperObject obj = gp.obj[i];
+                    if (obj != null && obj.worldX == nextX && obj.worldY == nextY) {
+                        objIndex = i;
                         break;
                     }
                 }
-            }
-            spriteCounter++;
-            if (spriteCounter > 20) {
-                switch (spriteNum) {
-                    case 1 -> spriteNum = 2;
-                    case 2 -> spriteNum = 3;
-                    case 3 -> spriteNum = 4;
-                    case 4 -> spriteNum = 1;
-                    default -> {
+
+                boolean canMovePlayer = false;
+
+                if (!collisionOn && canMoveTo(nextX, nextY) && (objIndex == -1 || gp.obj[objIndex] == null)) {
+                    canMovePlayer = true;
+                } else if (objIndex != -1 && gp.obj[objIndex] != null) {
+                    boolean pushed = tryPushObject(objIndex);
+                    if (pushed) {
+                        canMovePlayer = true;
                     }
                 }
-                spriteCounter = 0;
+
+                if (canMovePlayer) {
+                    targetX = nextX;
+                    targetY = nextY;
+                    moving = true;
+                }
+
+                keyH.upPressed = keyH.downPressed = keyH.leftPressed = keyH.rightPressed = false;
+            } else {
+                standCounter++;
+                if (standCounter == 20) {
+                    spriteNum = 1;
+                    standCounter = 0;
+                }
             }
-        } else {
-            direction = "still";
+        }
+
+        if (moving) {
+            if (worldX < targetX) {
+                worldX += speed;
+                if (worldX > targetX)
+                    worldX = targetX;
+            }
+            if (worldX > targetX) {
+                worldX -= speed;
+                if (worldX < targetX)
+                    worldX = targetX;
+            }
+            if (worldY < targetY) {
+                worldY += speed;
+                if (worldY > targetY)
+                    worldY = targetY;
+            }
+            if (worldY > targetY) {
+                worldY -= speed;
+                if (worldY < targetY)
+                    worldY = targetY;
+            }
+            if (worldX == targetX && worldY == targetY) {
+                moving = false;
+            }
         }
     }
 
-    public void moveObject(int i){
-        if (i != 999){
-            String objectName = gp.obj[i].name;
-            switch (objectName) {
-                case "Key" -> {
-                    int keyX = gp.obj[i].worldX;
-                    int keyY = gp.obj[i].worldY;
-                    switch (direction) {
-                        case "up" -> keyY -= gp.tileSize;
-                        case "down" -> keyY += gp.tileSize;
-                        case "left" -> keyX -= gp.tileSize;
-                        case "right" -> keyX += gp.tileSize;
+    private boolean canMoveTo(int nextX, int nextY) {
+        if (nextX < 0 || nextY < 0 ||
+                nextX > gp.screenWidth - gp.tileSize ||
+                nextY > gp.screenHeight - gp.tileSize) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean tryPushObject(int i) {
+        if (gp.obj[i] == null)
+            return false;
+
+        String objectName = gp.obj[i].name;
+
+        switch (objectName) {
+            case "Key" -> {
+                int keyX = gp.obj[i].worldX;
+                int keyY = gp.obj[i].worldY;
+                switch (direction) {
+                    case "up" -> keyY -= gp.tileSize;
+                    case "down" -> keyY += gp.tileSize;
+                    case "left" -> keyX -= gp.tileSize;
+                    case "right" -> keyX += gp.tileSize;
+                }
+
+                int tileCol = keyX / gp.tileSize;
+                int tileRow = keyY / gp.tileSize;
+
+                if (tileCol < 0 || tileRow < 0 ||
+                        tileCol >= gp.tileM.mapTileNum.length ||
+                        tileRow >= gp.tileM.mapTileNum[0].length) {
+                    return false;
+                }
+
+                boolean canMove = !gp.tileM.tile[gp.tileM.mapTileNum[tileCol][tileRow]].collision;
+
+                boolean occupied = false;
+                for (int j = 0; j < gp.obj.length; j++) {
+                    SuperObject obj = gp.obj[j];
+                    if (obj != null && j != i && obj.worldX == keyX && obj.worldY == keyY && !"Door".equals(obj.name)) {
+                        occupied = true;
+                        break;
                     }
+                }
 
-                    int tileCol = keyX / gp.tileSize;
-                    int tileRow = keyY / gp.tileSize;
-                    boolean canMove = !gp.tileM.tile[gp.tileM.mapTileNum[tileCol][tileRow]].collision;
-
-                    if (canMove) {
-                        gp.obj[i].worldX = keyX;
-                        gp.obj[i].worldY = keyY;
-                        for (int j = 0; j < gp.obj.length; j++) {
-                            SuperObject obj = gp.obj[j];
-                            if (obj != null && "Door".equals(obj.name) && obj.worldX == keyX && obj.worldY == keyY) {
-                                gp.obj[j] = null;
-                                gp.obj[i] = null;
-                                break;
-                            }
+                if (canMove && !occupied) {
+                    gp.obj[i].worldX = keyX;
+                    gp.obj[i].worldY = keyY;
+                    for (int j = 0; j < gp.obj.length; j++) {
+                        SuperObject obj = gp.obj[j];
+                        if (obj != null && "Door".equals(obj.name) && obj.worldX == keyX && obj.worldY == keyY) {
+                            gp.playSE(2);
+                            gp.obj[j] = null;
+                            gp.obj[i] = null;
+                            break;
                         }
                     }
+                    return true;
                 }
-                case "Flag" -> {
-                    level++;
-                    //TileManager.setLevel(level);  #devo capire come fare i livelli
+                return false;
+            }
+            case "Flag" -> {
+                gp.playSE(1);
+                level++;
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                System.exit(0);
+                return false;
+            }
+            default -> {
+                return false;
             }
         }
     }
 
     public void draw(java.awt.Graphics2D g2) {
-        BufferedImage image = null;
-        /*
-         * if (direction.equals("up")) {
-         * if (spriteNum == 1) {
-         * image = up1;
-         * } else if (spriteNum == 2) {
-         * image = up2;
-         * } else if (spriteNum == 3) {
-         * image = up3;
-         * } else if (spriteNum == 4) {
-         * image = up4;
-         * }
-         * }
-         * if (direction.equals("down")) {
-         * if (spriteNum == 1) {
-         * image = down1;
-         * } else if (spriteNum == 2) {
-         * image = down2;
-         * } else if (spriteNum == 3) {
-         * image = down3;
-         * } else if (spriteNum == 4) {
-         * image = down4;
-         * }
-         * }
-         * if (direction.equals("left")) {
-         * if (spriteNum == 1) {
-         * image = left1;
-         * } else if (spriteNum == 2) {
-         * image = left2;
-         * } else if (spriteNum == 3) {
-         * image = left3;
-         * } else if (spriteNum == 4) {
-         * image = left4;
-         * }
-         * }
-         * if (direction.equals("right")) {
-         * if (spriteNum == 1) {
-         * image = right1;
-         * } else if (spriteNum == 2) {
-         * image = right2;
-         * } else if (spriteNum == 3) {
-         * image = right3;
-         * } else if (spriteNum == 4) {
-         * image = right4;
-         * }
-         * }
-         */
-        image = leftStill;
+        BufferedImage image = leftStill;
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

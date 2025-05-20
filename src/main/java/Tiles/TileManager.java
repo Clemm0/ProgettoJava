@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.imageio.ImageIO; //funziona 50/50
+import javax.imageio.ImageIO;
 
 import Main.GamePanel;
 
