@@ -43,12 +43,11 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-
+        setUndecorated(true);
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
         cardPanel.add(createMainMenuPanel(), "main");
-        cardPanel.add(createSettingsPanel(), "settings");
 
         add(cardPanel);
         setVisible(true);
@@ -63,7 +62,7 @@ public class MainMenu extends JFrame {
             }
         };
 
-        JLabel title = new JLabel("Mystic Fur - Venture", JLabel.CENTER);
+        JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
         FontMetrics metrics = title.getFontMetrics(title.getFont());
@@ -78,7 +77,7 @@ public class MainMenu extends JFrame {
 
         JButton settingsButton = createStyledButton("Settings");
         settingsButton.setBounds(290, 210, 220, 50);
-        settingsButton.addActionListener(e -> cardLayout.show(cardPanel, "settings"));
+        settingsButton.addActionListener(e -> new Setting());
         panel.add(settingsButton);
 
         JButton exitButton = createStyledButton("Exit the Game");
@@ -95,43 +94,6 @@ public class MainMenu extends JFrame {
         return panel;
     }
 
-    private JPanel createSettingsPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(40, 40, 40));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
-
-        JLabel title = new JLabel("Settings");
-        title.setFont(retroFont.deriveFont(36f));
-        title.setForeground(Color.WHITE);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel volumeLabel = new JLabel("Volume");
-        volumeLabel.setFont(retroFont);
-        volumeLabel.setForeground(Color.LIGHT_GRAY);
-        volumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        volumeSlider = new JSlider(0, 100, 50);
-        volumeSlider.setBackground(new Color(40, 40, 40));
-        volumeSlider.setForeground(fgColor);
-        volumeSlider.setPaintTicks(true);
-        volumeSlider.setPaintLabels(true);
-        volumeSlider.setMajorTickSpacing(25);
-        volumeSlider.addChangeListener(e -> adjustVolume());
-
-        JButton backButton = createStyledButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(cardPanel, "main"));
-
-        panel.add(title);
-        panel.add(Box.createRigidArea(new Dimension(0, 40)));
-        panel.add(volumeLabel);
-        panel.add(volumeSlider);
-        panel.add(Box.createRigidArea(new Dimension(0, 30)));
-        panel.add(backButton);
-
-        return panel;
-    }
-
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(retroFont);
@@ -140,8 +102,7 @@ public class MainMenu extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
+                BorderFactory.createEmptyBorder(8, 20, 8, 20)));
 
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -166,6 +127,7 @@ public class MainMenu extends JFrame {
             JFrame gameFrame = new JFrame();
             gameFrame.setTitle("Game");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameFrame.setUndecorated(true);
             gameFrame.add(gamePanel);
             gameFrame.pack();
             gameFrame.setLocationRelativeTo(null);
@@ -176,13 +138,9 @@ public class MainMenu extends JFrame {
         }
     }
 
-    private void adjustVolume() {
-        int volume = volumeSlider.getValue();
-        System.out.println("Volume: " + volume);
-    }
-
     private void showCharacterSelector() {
         JDialog selectorDialog = new JDialog(this, "Select Your Character", true);
+        selectorDialog.setUndecorated(true);
         selectorDialog.setSize(700, 250);
         selectorDialog.setLocationRelativeTo(this);
         selectorDialog.setLayout(new BorderLayout());
@@ -191,7 +149,7 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = {"Claw", "AntlerLight", "FoxFire", "WIP"};
+        String[] characters = { "Claw", "AntlerLight", "FoxFire", "WIP" };
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
         for (String name : characters) {
@@ -203,7 +161,8 @@ public class MainMenu extends JFrame {
 
             JLabel imgLabel;
             if (name.equals("Claw")) {
-                ImageIcon icon = new ImageIcon("C:/Users/mpolo/Documents/GitHub/ProgettoJava/src/main/java/res/player/cat/Left0.png");
+                ImageIcon icon = new ImageIcon(
+                        "C:/Users/mpolo/Documents/GitHub/ProgettoJava/src/main/java/res/player/cat/Left0.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
