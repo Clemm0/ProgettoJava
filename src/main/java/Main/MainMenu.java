@@ -34,6 +34,9 @@ public class MainMenu extends JFrame {
     private JSlider volumeSlider;
     private String selectedCharacter = null;
 
+    private final Font retroFont = new Font("Monospaced", Font.BOLD, 18);
+    private final Color fgColor = new Color(0, 255, 0);
+
     public MainMenu() {
         setTitle("Game Main Menu");
         setSize(800, 550);
@@ -55,17 +58,17 @@ public class MainMenu extends JFrame {
         JPanel panel = new JPanel(null) {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(new Color(20, 20, 20));
+                g.setColor(Color.BLACK);
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
 
         JLabel title = new JLabel("Mystic Fur - Venture", JLabel.CENTER);
-        title.setFont(new Font("Retro", Font.BOLD, 48));
-        title.setForeground(new Color(255, 220, 235));
+        title.setFont(retroFont.deriveFont(36f));
+        title.setForeground(fgColor);
         FontMetrics metrics = title.getFontMetrics(title.getFont());
         int stringWidth = metrics.stringWidth(title.getText());
-        title.setBounds((800 - stringWidth) / 2, 40, stringWidth, 60);
+        title.setBounds((800 - stringWidth) / 2, 40, stringWidth + 10, 60);
         panel.add(title);
 
         JButton playButton = createStyledButton("Play");
@@ -84,7 +87,7 @@ public class MainMenu extends JFrame {
         panel.add(exitButton);
 
         JButton selectCharacterButton = createStyledButton("Select Character");
-        selectCharacterButton.setFont(new Font("Retro", Font.PLAIN, 16));
+        selectCharacterButton.setFont(retroFont);
         selectCharacterButton.setBounds(600, 450, 170, 35);
         selectCharacterButton.addActionListener(e -> showCharacterSelector());
         panel.add(selectCharacterButton);
@@ -94,26 +97,27 @@ public class MainMenu extends JFrame {
 
     private JPanel createSettingsPanel() {
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(40, 40, 40));
+        panel.setBackground(Color.BLACK);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
 
         JLabel title = new JLabel("Settings");
-        title.setFont(new Font("Retro", Font.BOLD, 36));
-        title.setForeground(Color.WHITE);
+        title.setFont(retroFont.deriveFont(28f));
+        title.setForeground(fgColor);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel volumeLabel = new JLabel("Volume");
-        volumeLabel.setFont(new Font("Retro", Font.PLAIN, 18));
-        volumeLabel.setForeground(Color.LIGHT_GRAY);
+        volumeLabel.setFont(retroFont);
+        volumeLabel.setForeground(fgColor);
         volumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         volumeSlider = new JSlider(0, 100, 50);
-        volumeSlider.setBackground(new Color(40, 40, 40));
-        volumeSlider.setForeground(new Color(255, 180, 220));
+        volumeSlider.setBackground(Color.BLACK);
+        volumeSlider.setForeground(fgColor);
         volumeSlider.setPaintTicks(true);
         volumeSlider.setPaintLabels(true);
         volumeSlider.setMajorTickSpacing(25);
+        volumeSlider.setFont(retroFont.deriveFont(12f));
         volumeSlider.addChangeListener(e -> adjustVolume());
 
         JButton backButton = createStyledButton("Back");
@@ -131,22 +135,22 @@ public class MainMenu extends JFrame {
 
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Retro", Font.BOLD, 20));
-        button.setBackground(new Color(255, 180, 220));
-        button.setForeground(Color.BLACK);
+        button.setFont(retroFont);
+        button.setBackground(Color.DARK_GRAY);
+        button.setForeground(fgColor);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
+                BorderFactory.createLineBorder(Color.GREEN, 2),
                 BorderFactory.createEmptyBorder(8, 20, 8, 20)
         ));
 
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(255, 210, 235));
+                button.setBackground(Color.GRAY);
             }
 
             public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(255, 180, 220));
+                button.setBackground(Color.DARK_GRAY);
             }
         });
 
@@ -186,7 +190,7 @@ public class MainMenu extends JFrame {
 
         JPanel charPanel = new JPanel();
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
-        charPanel.setBackground(new Color(30, 30, 30));
+        charPanel.setBackground(Color.BLACK);
 
         String[] characters = {"Claw", "AntlerLight", "FoxFire", "WIP"};
         HashMap<String, JPanel> panelMap = new HashMap<>();
@@ -200,7 +204,6 @@ public class MainMenu extends JFrame {
 
             JLabel imgLabel;
             if (name.equals("Claw")) {
-                // Percorso assoluto - assicurati che l'immagine esista
                 ImageIcon icon = new ImageIcon("C:\\Users\\mpolo\\Documents\\GitHub\\ProgettoJava\\src\\main\\java\\res\\player\\cat\\CatStill.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg), JLabel.CENTER);
@@ -211,7 +214,8 @@ public class MainMenu extends JFrame {
             }
 
             JLabel nameLabel = new JLabel(name, JLabel.CENTER);
-            nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            nameLabel.setFont(retroFont);
+            nameLabel.setForeground(Color.BLACK);
 
             p.add(imgLabel, BorderLayout.CENTER);
             p.add(nameLabel, BorderLayout.SOUTH);
@@ -238,14 +242,15 @@ public class MainMenu extends JFrame {
         scrollPane.setPreferredSize(new Dimension(700, 150));
 
         JButton confirmButton = new JButton("Confirm");
-        confirmButton.setFont(new Font("Retro", Font.BOLD, 16));
-        confirmButton.setBackground(new Color(180, 255, 180));
+        confirmButton.setFont(retroFont);
+        confirmButton.setBackground(Color.DARK_GRAY);
+        confirmButton.setForeground(fgColor);
         confirmButton.setFocusPainted(false);
         confirmButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         confirmButton.addActionListener(e -> selectorDialog.dispose());
 
         JPanel bottom = new JPanel();
-        bottom.setBackground(new Color(30, 30, 30));
+        bottom.setBackground(Color.BLACK);
         bottom.add(confirmButton);
 
         selectorDialog.add(scrollPane, BorderLayout.CENTER);
