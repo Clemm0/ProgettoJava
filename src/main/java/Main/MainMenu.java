@@ -58,17 +58,17 @@ public class MainMenu extends JFrame {
         JPanel panel = new JPanel(null) {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(Color.BLACK);
+                g.setColor(new Color(20, 20, 20));
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
 
         JLabel title = new JLabel("Mystic Fur - Venture", JLabel.CENTER);
-        title.setFont(retroFont.deriveFont(36f));
+        title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
         FontMetrics metrics = title.getFontMetrics(title.getFont());
         int stringWidth = metrics.stringWidth(title.getText());
-        title.setBounds((800 - stringWidth) / 2, 40, stringWidth + 10, 60);
+        title.setBounds((800 - stringWidth) / 2, 40, stringWidth, 60);
         panel.add(title);
 
         JButton playButton = createStyledButton("Play");
@@ -88,7 +88,7 @@ public class MainMenu extends JFrame {
 
         JButton selectCharacterButton = createStyledButton("Select Character");
         selectCharacterButton.setFont(retroFont);
-        selectCharacterButton.setBounds(600, 450, 170, 35);
+        selectCharacterButton.setBounds(600, 450, 170, 50); // Altezza aumentata per due righe
         selectCharacterButton.addActionListener(e -> showCharacterSelector());
         panel.add(selectCharacterButton);
 
@@ -97,27 +97,26 @@ public class MainMenu extends JFrame {
 
     private JPanel createSettingsPanel() {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.BLACK);
+        panel.setBackground(new Color(40, 40, 40));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
 
         JLabel title = new JLabel("Settings");
-        title.setFont(retroFont.deriveFont(28f));
+        title.setFont(retroFont.deriveFont(36f));
         title.setForeground(fgColor);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel volumeLabel = new JLabel("Volume");
         volumeLabel.setFont(retroFont);
-        volumeLabel.setForeground(fgColor);
+        volumeLabel.setForeground(Color.LIGHT_GRAY);
         volumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         volumeSlider = new JSlider(0, 100, 50);
-        volumeSlider.setBackground(Color.BLACK);
+        volumeSlider.setBackground(new Color(40, 40, 40));
         volumeSlider.setForeground(fgColor);
         volumeSlider.setPaintTicks(true);
         volumeSlider.setPaintLabels(true);
         volumeSlider.setMajorTickSpacing(25);
-        volumeSlider.setFont(retroFont.deriveFont(12f));
         volumeSlider.addChangeListener(e -> adjustVolume());
 
         JButton backButton = createStyledButton("Back");
@@ -136,8 +135,8 @@ public class MainMenu extends JFrame {
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(retroFont);
-        button.setBackground(Color.DARK_GRAY);
         button.setForeground(fgColor);
+        button.setBackground(new Color(40, 40, 40));
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GREEN, 2),
@@ -146,11 +145,11 @@ public class MainMenu extends JFrame {
 
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(Color.GRAY);
+                button.setBackground(new Color(60, 60, 60));
             }
 
             public void mouseExited(MouseEvent e) {
-                button.setBackground(Color.DARK_GRAY);
+                button.setBackground(new Color(40, 40, 40));
             }
         });
 
@@ -173,7 +172,7 @@ public class MainMenu extends JFrame {
             gameFrame.setVisible(true);
             gamePanel.setupGame();
             gamePanel.startGameThread();
-            this.dispose(); // Chiude il Menu
+            this.dispose();
         }
     }
 
@@ -190,15 +189,15 @@ public class MainMenu extends JFrame {
 
         JPanel charPanel = new JPanel();
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
-        charPanel.setBackground(Color.BLACK);
+        charPanel.setBackground(new Color(30, 30, 30));
 
         String[] characters = {"Claw", "AntlerLight", "FoxFire", "WIP"};
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
         for (String name : characters) {
             JPanel p = new JPanel();
-            p.setPreferredSize(new Dimension(120, 150));
-            p.setLayout(new BorderLayout());
+            p.setPreferredSize(new Dimension(100, 120));
+            p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
             p.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
             p.setBackground(name.equals(selectedCharacter) ? Color.GREEN : Color.WHITE);
 
@@ -215,10 +214,12 @@ public class MainMenu extends JFrame {
 
             JLabel nameLabel = new JLabel(name, JLabel.CENTER);
             nameLabel.setFont(retroFont);
-            nameLabel.setForeground(Color.BLACK);
+            nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            p.add(imgLabel, BorderLayout.CENTER);
-            p.add(nameLabel, BorderLayout.SOUTH);
+            p.add(Box.createVerticalStrut(10));
+            p.add(imgLabel);
+            p.add(Box.createVerticalStrut(5));
+            p.add(nameLabel);
 
             p.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -243,14 +244,13 @@ public class MainMenu extends JFrame {
 
         JButton confirmButton = new JButton("Confirm");
         confirmButton.setFont(retroFont);
-        confirmButton.setBackground(Color.DARK_GRAY);
-        confirmButton.setForeground(fgColor);
+        confirmButton.setBackground(new Color(180, 255, 180));
         confirmButton.setFocusPainted(false);
         confirmButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         confirmButton.addActionListener(e -> selectorDialog.dispose());
 
         JPanel bottom = new JPanel();
-        bottom.setBackground(Color.BLACK);
+        bottom.setBackground(new Color(30, 30, 30));
         bottom.add(confirmButton);
 
         selectorDialog.add(scrollPane, BorderLayout.CENTER);
