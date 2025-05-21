@@ -3,7 +3,6 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
@@ -26,11 +25,8 @@ public class Player extends Entity {
 
     private int targetX, targetY;
 
-    // Animazioni
-    public BufferedImage up0, up1, up2, up3, up4;
-    public BufferedImage down0, down1, down2, down3, down4;
-    public BufferedImage left0, left1, left2, left3, left4;
-    public BufferedImage right0, right1, right2, right3, right4;
+    int spriteCounter = 0;
+    int spriteNum = 0;
 
     public Player(GamePanel gp, KeyHandler keyH, String name) {
         this.name = name;
@@ -60,33 +56,11 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
-            // UP
-            up0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up0.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up2.png"));
-            up3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up3.png"));
-            up4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up4.png"));
-
-            // DOWN
-            down0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down0.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down2.png"));
-            down3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down3.png"));
-            down4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down4.png"));
-
-            // LEFT
             left0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left0.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left2.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left2.png")); // Verifica maiuscola
             left3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left3.png"));
             left4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left4.png"));
-
-            // RIGHT
-            right0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right0.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right4.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,22 +79,18 @@ public class Player extends Entity {
 
             if (keyH.upPressed) {
                 direction = "up";
-                image = up0;
                 nextY -= gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.downPressed) {
                 direction = "down";
-                image = down0;
                 nextY += gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.leftPressed) {
                 direction = "left";
-                image = left0;
                 nextX -= gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.rightPressed) {
                 direction = "right";
-                image = right0;
                 nextX += gp.tileSize;
                 gp.playSE(3);
             }
@@ -171,26 +141,47 @@ public class Player extends Entity {
         }
 
         if (moving) {
-            if (worldX < targetX) worldX += speed;
-            if (worldX > targetX) worldX -= speed;
-            if (worldY < targetY) worldY += speed;
-            if (worldY > targetY) worldY -= speed;
+            spriteCounter++;
+            if (spriteCounter > 10) {
+                spriteNum++;
+                if (spriteNum > 4) spriteNum = 0;
+                spriteCounter = 0;
+            }
 
+            if (worldX < targetX) {
+                worldX += speed;
+                if (worldX > targetX) worldX = targetX;
+            }
+            if (worldX > targetX) {
+                worldX -= speed;
+                if (worldX < targetX) worldX = targetX;
+            }
+            if (worldY < targetY) {
+                worldY += speed;
+                if (worldY > targetY) worldY = targetY;
+            }
+            if (worldY > targetY) {
+                worldY -= speed;
+                if (worldY < targetY) worldY = targetY;
+            }
             if (worldX == targetX && worldY == targetY) {
                 moving = false;
-                spriteNum = (spriteNum + 1) % 5;
             }
         }
     }
 
     private boolean canMoveTo(int nextX, int nextY) {
-        return !(nextX < 0 || nextY < 0 ||
+        if (nextX < 0 || nextY < 0 ||
                 nextX > gp.screenWidth - gp.tileSize ||
-                nextY > gp.screenHeight - gp.tileSize);
+                nextY > gp.screenHeight - gp.tileSize) {
+            return false;
+        }
+        return true;
     }
 
     private boolean tryPushObject(int i) {
         if (gp.obj[i] == null) return false;
+
         String objectName = gp.obj[i].name;
 
         switch (objectName) {
@@ -208,8 +199,8 @@ public class Player extends Entity {
                 int tileRow = keyY / gp.tileSize;
 
                 if (tileCol < 0 || tileRow < 0 ||
-                    tileCol >= gp.tileM.mapTileNum.length ||
-                    tileRow >= gp.tileM.mapTileNum[0].length) {
+                        tileCol >= gp.tileM.mapTileNum.length ||
+                        tileRow >= gp.tileM.mapTileNum[0].length) {
                     return false;
                 }
 
@@ -263,24 +254,6 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         switch (direction) {
-            case "up" -> {
-                switch (spriteNum) {
-                    case 0 -> image = up0;
-                    case 1 -> image = up1;
-                    case 2 -> image = up2;
-                    case 3 -> image = up3;
-                    case 4 -> image = up4;
-                }
-            }
-            case "down" -> {
-                switch (spriteNum) {
-                    case 0 -> image = down0;
-                    case 1 -> image = down1;
-                    case 2 -> image = down2;
-                    case 3 -> image = down3;
-                    case 4 -> image = down4;
-                }
-            }
             case "left" -> {
                 switch (spriteNum) {
                     case 0 -> image = left0;
@@ -290,17 +263,7 @@ public class Player extends Entity {
                     case 4 -> image = left4;
                 }
             }
-            case "right" -> {
-                switch (spriteNum) {
-                    case 0 -> image = right0;
-                    case 1 -> image = right1;
-                    case 2 -> image = right2;
-                    case 3 -> image = right3;
-                    case 4 -> image = right4;
-                }
-            }
         }
-
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }
