@@ -6,7 +6,8 @@ import Tiles.TileManager;
 import entity.Player;
 import object.SuperObject;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable 
+{
     final int originalSize = 16;
     final int scale = 4;
     public final int tileSize = originalSize * scale;
@@ -86,13 +87,22 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+
+        // Qui imposto il ritaglio per mostrare solo la mappa senza il nero esterno
+        g2.setClip(0, 0, tileSize * maxWorldCol, tileSize * maxWorldRow);
+
         tileM.draw(g2);
+
         for (SuperObject obj1 : obj) {
             if (obj1 != null) {
                 obj1.draw(g2, this);
             }
         }
+
         player.draw(g2);
+
+        g2.setClip(null); // opzionale, reset del ritaglio
+
         g2.dispose();
     }
 
