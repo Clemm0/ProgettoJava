@@ -17,7 +17,7 @@ public final class TileManager {
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tile = new Tile[14]; // 14 blocchi diversi
-        // (is | name | you | youT | wall | wallT | water | waterT | door | doorT | key
+        // (is | name | you | youT | wall | wallT | water1 | waterT | door | doorT | key
         // | keyT | flag | flagT | lockT | ulockT | sinkT | stopT | winT)
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
@@ -27,7 +27,7 @@ public final class TileManager {
     public void getTileImage() {
         try {
             tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass.png"));
+            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/planks.png"));
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/wall.png"));
             tile[1].collision = true;
