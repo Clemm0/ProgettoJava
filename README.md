@@ -51,8 +51,9 @@
 ### 21/05
 - **[GabrielBini07]**
   - Implementazione del Menu principale del gioco
-  - Assegnazione dei nomi dei personaggi 
-  - Sistemazione movimenti del gatto verso sinistra nella classe Player
+  - Assegnazione dei nomi dei personaggi e del videogioco
+  - Sistemazione movimenti del gatto verso ogni direzione nella classe Player
+  - Aggiunta dei blocchi di acqua, del pavimento (assi di legno) e dei muri
 
 - **[Clemm0]**
   - Aggiunta impostazioni e salvataggio di suddette
