@@ -6,38 +6,37 @@ import Tiles.TileManager;
 import entity.Player;
 import object.SuperObject;
 
-public class GamePanel extends JPanel implements Runnable {
-
-    final int originalSize = 16; // dimensione originale di un tile
+public class GamePanel extends JPanel implements Runnable 
+{
+    final int originalSize = 16;
     final int scale = 4;
-
-    public final int tileSize = originalSize * scale; // 64x64
-
-    // Mappa 16x12 come da te fornita
-    public final int maxWorldCol = 16;
-    public final int maxWorldRow = 12;
-
-    public final int screenWidth = tileSize * maxWorldCol; // 1024 px
-    public final int screenHeight = tileSize * maxWorldRow; // 768 px
-
+    public final int tileSize = originalSize * scale;
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
     final int FPS = 60;
+    public static boolean optionState;
+    public final int maxWorldCol = maxScreenCol;
+    public final int maxWorldRow = maxScreenRow;
+    public final int maxWorldSize = tileSize * maxWorldCol;
+    public final int maxWorldHeight = tileSize * maxWorldRow;
 
-    // System
-    Thread gameThread;
-    public KeyHandler keyH = new KeyHandler();
-    public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter = new AssetSetter(this);
-    public Sound music = new Sound();
-    public Sound se = new Sound();
-
-    // Entities & Tiles
-    public Player player = new Player(this, keyH);
     public TileManager tileM = new TileManager(this);
+    KeyHandler keyH = new KeyHandler();
+    Thread gameThread;
+    public Player player = new Player(this, keyH,"cat");
+    public CollisionChecker cChecker = new CollisionChecker(this);
+
+    public AssetSetter aSetter = new AssetSetter(this);
     public SuperObject[] obj = new SuperObject[10];
+
+    Sound music = new Sound();
+    Sound se = new Sound();
 
     public GamePanel() {
         this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
-        this.setBackground(java.awt.Color.black); // non verrà mai mostrato se la mappa riempie lo schermo
+        this.setBackground(java.awt.Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
@@ -55,20 +54,27 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / FPS;
+        double drawInterval = 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-
+        long timer = 0;
+        int drawCount = 0;
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
-
             if (delta >= 1) {
                 update();
                 repaint();
-                delta--;
+                delta = 0;
+                drawCount++;
+            }
+
+            if (timer >= 1000000000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
             }
         }
     }
@@ -82,15 +88,20 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 
+        // Qui imposto il ritaglio per mostrare solo la mappa senza il nero esterno
+        g2.setClip(0, 0, tileSize * maxWorldCol, tileSize * maxWorldRow);
+
         tileM.draw(g2);
 
-        for (SuperObject object : obj) {
-            if (object != null) {
-                object.draw(g2, this);
+        for (SuperObject obj1 : obj) {
+            if (obj1 != null) {
+                obj1.draw(g2, this);
             }
         }
 
         player.draw(g2);
+
+        g2.setClip(null); // opzionale, reset del ritaglio
 
         g2.dispose();
     }

@@ -1,12 +1,14 @@
 package entity;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
 import Main.GamePanel;
 import Main.KeyHandler;
+import Main.Setting;
 import object.SuperObject;
 
 public class Player extends Entity {
@@ -15,13 +17,16 @@ public class Player extends Entity {
     public static int level = 1;
     public int standCounter = 0;
     boolean moving = false;
+    public String name;
+    Image image = null;
 
     public final int screenX;
     public final int screenY;
 
     private int targetX, targetY;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(GamePanel gp, KeyHandler keyH, String name) {
+        this.name = name;
         this.gp = gp;
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
@@ -47,33 +52,60 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        try {
-            leftStill = ImageIO.read(getClass().getResourceAsStream("/res/player/cat/CatStill.png"));
-            // ...other image loading...
+        try {/*
+            up0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up0.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up2.png"));
+            up3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up3.png"));
+            up4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up4.png"));
+            down0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down0.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down2.png"));
+            down3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down3.png"));
+            down4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down4.png"));*/
+            left0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left0.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left2.png"));
+            left3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left3.png"));
+            left4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left4.png"));/*
+            right0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right0.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right2.png"));
+            right3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right3.png"));
+            right4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right4.png"));*/
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void update() {
+        if (keyH.escapePressed) {
+            keyH.escapePressed = false;
+            showPauseMenu();
+            return;
+        }
         if (!moving) {
             int nextX = worldX;
             int nextY = worldY;
 
             if (keyH.upPressed) {
                 direction = "up";
+                image = up0;
                 nextY -= gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.downPressed) {
                 direction = "down";
+                image = down0;
                 nextY += gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.leftPressed) {
                 direction = "left";
+                image = left0;
                 nextX -= gp.tileSize;
                 gp.playSE(3);
             } else if (keyH.rightPressed) {
                 direction = "right";
+                image = right0;
                 nextX += gp.tileSize;
                 gp.playSE(3);
             }
@@ -229,8 +261,49 @@ public class Player extends Entity {
         }
     }
 
-    public void draw(java.awt.Graphics2D g2) {
-        BufferedImage image = leftStill;
+    private void showPauseMenu() {
+        new Setting();
+    }
+
+    public void draw(Graphics2D g2) {
+        switch (direction) {
+            /*case "up" -> {
+                image = up1;
+                switch (spriteNum) {
+                    case 0 -> image = up0;
+                    case 2 -> image = up2;
+                    case 3 -> image = up3;
+                    case 4 -> image = up4;
+                }
+            }
+            case "down" -> {
+                image = down1;
+                switch (spriteNum) {
+                    case 0 -> image = down0;
+                    case 2 -> image = down2;
+                    case 3 -> image = down3;
+                    case 4 -> image = down4;
+                }
+            }*/
+            case "left" -> {
+                image = left1;
+                switch (spriteNum) {
+                    case 0 -> image = left0;
+                    case 2 -> image = left2;
+                    case 3 -> image = left3;
+                    case 4 -> image = left4;
+                }
+            }
+            /*case "right" -> {
+                image = right1;
+                switch (spriteNum) {
+                    case 0 -> image = right0;
+                    case 2 -> image = right2;
+                    case 3 -> image = right3;
+                    case 4 -> image = right4;
+                }
+            }*/
+        }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

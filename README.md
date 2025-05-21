@@ -49,4 +49,7 @@
 - **[GabrielBini07]**
   - Implementazione del Menu principale del gioco
   - Assegnazione dei nomi dei personaggi
+
+- **[Clemm0]**
+  - Aggiunta impostazioni e salvataggio di suddette
 ---

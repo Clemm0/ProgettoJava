@@ -4,6 +4,7 @@ public class KeyHandler implements java.awt.event.KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean undoPressed, restartPressed;
+    public boolean escapePressed = false;
 
     @Override
     public void keyTyped(java.awt.event.KeyEvent e) {
@@ -25,6 +26,8 @@ public class KeyHandler implements java.awt.event.KeyListener {
             undoPressed = true;
         if (code == java.awt.event.KeyEvent.VK_U)
             restartPressed = true;
+        if (code == java.awt.event.KeyEvent.VK_ESCAPE)
+            escapePressed = true;
     }
 
     @Override
@@ -43,5 +46,7 @@ public class KeyHandler implements java.awt.event.KeyListener {
             undoPressed = false;
         if (code == java.awt.event.KeyEvent.VK_U)
             restartPressed = false;
+        if (code == java.awt.event.KeyEvent.VK_ESCAPE)
+            escapePressed = false;
     }
 }
