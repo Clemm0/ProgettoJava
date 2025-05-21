@@ -203,7 +203,7 @@ public class MainMenu extends JFrame {
 
             JLabel imgLabel;
             if (name.equals("Claw")) {
-                ImageIcon icon = new ImageIcon("C:\\Users\\mpolo\\Documents\\GitHub\\ProgettoJava\\src\\main\\java\\res\\player\\cat\\CatStill.png");
+                ImageIcon icon = new ImageIcon("C:/Users/mpolo/Documents/GitHub/ProgettoJava/src/main/java/res/player/cat/Left0.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
