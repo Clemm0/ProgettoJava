@@ -45,4 +45,8 @@
   - Aggiunta musiche
   - Sistemati problemi con gli assert dove rimanevano alcuni blocchi vuoti senza che si caricavano
 
+### 21/05
+- **[GabrielBini07]**
+  - Implementazione del Menu principale del gioco
+  - Assegnazione dei nomi dei personaggi
 ---
