@@ -52,27 +52,14 @@ public final class TileManager {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        int worldCol = 0;
-        int worldRow = 0;
-
-        while (worldCol < gp.maxScreenCol && worldRow < gp.maxScreenRow) {
-            int tileNum = mapTileNum[worldCol][worldRow];
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
-                    && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
-                    && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
-                    && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-            }
-            worldCol++;
-            if (worldCol == gp.maxScreenCol) {
-                worldCol = 0;
-                worldRow++;
+    public void draw(Graphics2D g2, int cameraX, int cameraY) {
+        for (int col = 0; col < gp.maxWorldCol; col++) {
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                int worldX = col * gp.tileSize;
+                int worldY = row * gp.tileSize;
+                int drawX = worldX - cameraX;
+                int drawY = worldY - cameraY;
+                g2.drawImage(tile[mapTileNum[col][row]].image, drawX, drawY, gp.tileSize, gp.tileSize, null);
             }
         }
     }
