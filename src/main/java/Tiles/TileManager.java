@@ -16,10 +16,9 @@ public final class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[14]; // 14 blocchi diversi LMAO pensavo di meno
+        tile = new Tile[14]; // 14 blocchi diversi
         // (is | name | you | youT | wall | wallT | water | waterT | door | doorT | key
         // | keyT | flag | flagT | lockT | ulockT | sinkT | stopT | winT)
-        // buona fortuna a chi le deve disegnare
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/res/maps/map01.maps");
@@ -52,6 +51,7 @@ public final class TileManager {
         }
     }
 
+    // Old draw method (player always centered)
     public void draw(Graphics2D g2) {
         int worldCol = 0;
         int worldRow = 0;
@@ -77,6 +77,19 @@ public final class TileManager {
         }
     }
 
+    // Camera-based draw method (recommended)
+    public void draw(Graphics2D g2, int cameraX, int cameraY) {
+        for (int col = 0; col < gp.maxWorldCol; col++) {
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                int worldX = col * gp.tileSize;
+                int worldY = row * gp.tileSize;
+                int drawX = worldX - cameraX;
+                int drawY = worldY - cameraY;
+                g2.drawImage(tile[mapTileNum[col][row]].image, drawX, drawY, gp.tileSize, gp.tileSize, null);
+            }
+        }
+    }
+
     public void loadMap(String filePath) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
@@ -86,7 +99,7 @@ public final class TileManager {
             while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
                 String line = br.readLine();
                 while (col < gp.maxWorldCol) {
-                    String numbers[] = line.split(";");
+                    String[] numbers = line.split(";");
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
                     col++;
@@ -97,6 +110,7 @@ public final class TileManager {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
