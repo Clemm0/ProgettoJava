@@ -60,8 +60,8 @@ public class MainMenu extends JFrame {
             }
         };
 
-        JLabel title = new JLabel("Game Title", JLabel.CENTER);
-        title.setFont(new Font("Courier New", Font.BOLD, 48));
+        JLabel title = new JLabel("Mystic Fur - Venture", JLabel.CENTER);
+        title.setFont(new Font("Retro", Font.BOLD, 48));
         title.setForeground(new Color(255, 220, 235));
         FontMetrics metrics = title.getFontMetrics(title.getFont());
         int stringWidth = metrics.stringWidth(title.getText());
@@ -84,7 +84,7 @@ public class MainMenu extends JFrame {
         panel.add(exitButton);
 
         JButton selectCharacterButton = createStyledButton("Select Character");
-        selectCharacterButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        selectCharacterButton.setFont(new Font("Retro", Font.PLAIN, 16));
         selectCharacterButton.setBounds(600, 450, 170, 35);
         selectCharacterButton.addActionListener(e -> showCharacterSelector());
         panel.add(selectCharacterButton);
@@ -99,12 +99,12 @@ public class MainMenu extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
 
         JLabel title = new JLabel("Settings");
-        title.setFont(new Font("Courier New", Font.BOLD, 36));
+        title.setFont(new Font("Retro", Font.BOLD, 36));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel volumeLabel = new JLabel("Volume");
-        volumeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        volumeLabel.setFont(new Font("Retro", Font.PLAIN, 18));
         volumeLabel.setForeground(Color.LIGHT_GRAY);
         volumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -131,7 +131,7 @@ public class MainMenu extends JFrame {
 
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Courier New", Font.BOLD, 20));
+        button.setFont(new Font("Retro", Font.BOLD, 20));
         button.setBackground(new Color(255, 180, 220));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
@@ -238,7 +238,7 @@ public class MainMenu extends JFrame {
         scrollPane.setPreferredSize(new Dimension(700, 150));
 
         JButton confirmButton = new JButton("Confirm");
-        confirmButton.setFont(new Font("Courier New", Font.BOLD, 16));
+        confirmButton.setFont(new Font("Retro", Font.BOLD, 16));
         confirmButton.setBackground(new Color(180, 255, 180));
         confirmButton.setFocusPainted(false);
         confirmButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
