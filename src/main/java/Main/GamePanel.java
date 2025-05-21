@@ -1,49 +1,54 @@
 package Main;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
-import Tiles.TileManager;
-import entity.Player;
-import object.SuperObject;
-
 public class GamePanel extends JPanel implements Runnable {
-    final int originalSize = 16;
-    final int scale = 4;
-    public final int tileSize = originalSize * scale;
+
+    // Tile settings
+    final int originalSize = 16; // 16x16 tile originale
+    final int scale = 4; // scala 4x
+    public final int tileSize = originalSize * scale; // 64 pixel per tile
+
+    // Screen settings
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;
-    public final int screenHeight = tileSize * maxScreenRow;
+    public final int screenWidth = tileSize * maxScreenCol; // 1024 px
+    public final int screenHeight = tileSize * maxScreenRow; // 768 px
+
+    // World settings (la mappa 16x12 tile come hai passato)
+    public final int maxWorldCol = 16;
+    public final int maxWorldRow = 12;
+    public final int worldWidth = tileSize * maxWorldCol; // 1024 px
+    public final int worldHeight = tileSize * maxWorldRow; // 768 px
+
+    // FPS
     final int FPS = 60;
 
-    public final int maxWorldCol = maxScreenCol;
-    public final int maxWorldRow = maxScreenRow;
-    public final int maxWorldSize = tileSize * maxWorldCol;
-    public final int maxWorldHeight = tileSize * maxWorldRow;
-
-    public TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public Player player = new Player(this, keyH);
-    public CollisionChecker cChecker = new CollisionChecker(this);
+    KeyHandler keyH = new KeyHandler();
 
-    public AssetSetter aSetter = new AssetSetter(this);
-    public SuperObject[] obj = new SuperObject[10];
+    TileManager tileM = new TileManager(this);
+    Player player = new Player(this, keyH);
 
-    Sound music = new Sound();
-    Sound se = new Sound();
+    // Posizione camera nel mondo
+    int cameraX, cameraY;
 
     public GamePanel() {
-        this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
-        this.setBackground(java.awt.Color.black);
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
 
     public void setupGame() {
-        aSetter.setObject();
-        playMusic(0);
+        // Posizione iniziale player (per esempio centro mappa)
+        player.setWorldPosition(tileSize * 8, tileSize * 6);
     }
 
     public void startGameThread() {
@@ -53,61 +58,56 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
+        double drawInterval = 1000000000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        long timer = 0;
-        int drawCount = 0;
+
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
+
             if (delta >= 1) {
                 update();
                 repaint();
-                delta = 0;
-                drawCount++;
-            }
-
-            if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
-                drawCount = 0;
-                timer = 0;
+                delta--;
             }
         }
     }
 
     public void update() {
         player.update();
+
+        // Calcola posizione camera centrata sul player
+        cameraX = player.worldX - screenWidth / 2;
+        cameraY = player.worldY - screenHeight / 2;
+
+        // Limita camera ai bordi della mappa per non vedere nero attorno
+        if (cameraX < 0) cameraX = 0;
+        if (cameraY < 0) cameraY = 0;
+        if (cameraX > worldWidth - screenWidth) cameraX = worldWidth - screenWidth;
+        if (cameraY > worldHeight - screenHeight) cameraY = worldHeight - screenHeight;
     }
 
     @Override
-    public void paintComponent(java.awt.Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Trasla il contesto grafico per simulare la camera
+        g2.translate(-cameraX, -cameraY);
+
+        // Disegna la mappa
         tileM.draw(g2);
-        for (SuperObject obj1 : obj) {
-            if (obj1 != null) {
-                obj1.draw(g2, this);
-            }
-        }
+
+        // Disegna il player usando coordinate mondo
         player.draw(g2);
+
+        // Torna indietro (opzionale)
+        g2.translate(cameraX, cameraY);
+
         g2.dispose();
-    }
-
-    public void playMusic(int i) {
-        music.setFile(i);
-        music.play();
-        music.loop();
-    }
-
-    public void stopMusic() {
-        music.stop();
-    }
-
-    public void playSE(int i) {
-        se.setFile(i);
-        se.play();
     }
 }
