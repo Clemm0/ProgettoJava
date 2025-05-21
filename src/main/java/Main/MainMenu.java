@@ -1,31 +1,11 @@
 package Main;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class MainMenu extends JFrame {
 
@@ -33,7 +13,6 @@ public class MainMenu extends JFrame {
     private JPanel cardPanel;
     private JSlider volumeSlider;
     private String selectedCharacter = null;
-
     private final Font retroFont = new Font("Monospaced", Font.BOLD, 18);
     private final Color fgColor = new Color(0, 255, 0);
 
@@ -86,9 +65,11 @@ public class MainMenu extends JFrame {
         exitButton.addActionListener(e -> System.exit(0));
         panel.add(exitButton);
 
-        JButton selectCharacterButton = createStyledButton("Select Character");
-        selectCharacterButton.setFont(retroFont);
-        selectCharacterButton.setBounds(600, 450, 170, 50); // Altezza aumentata per due righe
+        JButton selectCharacterButton = createStyledButton("Select\nCharacter");
+        selectCharacterButton.setFont(retroFont.deriveFont(Font.PLAIN, 14f));
+        selectCharacterButton.setBounds(600, 450, 170, 50);
+        selectCharacterButton.setText("Select Character");
+        selectCharacterButton.setUI(new MultiLineButtonUI());
         selectCharacterButton.addActionListener(e -> showCharacterSelector());
         panel.add(selectCharacterButton);
 
@@ -103,7 +84,7 @@ public class MainMenu extends JFrame {
 
         JLabel title = new JLabel("Settings");
         title.setFont(retroFont.deriveFont(36f));
-        title.setForeground(fgColor);
+        title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel volumeLabel = new JLabel("Volume");
@@ -135,21 +116,21 @@ public class MainMenu extends JFrame {
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(retroFont);
-        button.setForeground(fgColor);
-        button.setBackground(new Color(40, 40, 40));
+        button.setBackground(fgColor);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GREEN, 2),
+                BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
                 BorderFactory.createEmptyBorder(8, 20, 8, 20)
         ));
 
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(60, 60, 60));
+                button.setBackground(new Color(180, 255, 180));
             }
 
             public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(40, 40, 40));
+                button.setBackground(fgColor);
             }
         });
 
@@ -205,14 +186,15 @@ public class MainMenu extends JFrame {
             if (name.equals("Claw")) {
                 ImageIcon icon = new ImageIcon("C:\\Users\\mpolo\\Documents\\GitHub\\ProgettoJava\\src\\main\\java\\res\\player\\cat\\CatStill.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-                imgLabel = new JLabel(new ImageIcon(scaledImg), JLabel.CENTER);
+                imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
                 ImageIcon icon = new ImageIcon(name.toLowerCase() + ".png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-                imgLabel = new JLabel(new ImageIcon(scaledImg), JLabel.CENTER);
+                imgLabel = new JLabel(new ImageIcon(scaledImg));
             }
+            imgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JLabel nameLabel = new JLabel(name, JLabel.CENTER);
+            JLabel nameLabel = new JLabel(name);
             nameLabel.setFont(retroFont);
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -261,4 +243,3 @@ public class MainMenu extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainMenu::new);
     }
-}
