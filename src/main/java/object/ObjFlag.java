@@ -7,7 +7,7 @@ public class ObjFlag extends SuperObject {
         collision = false;
         name = "Flag";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/flag.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/flag1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
