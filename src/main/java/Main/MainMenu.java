@@ -51,9 +51,12 @@ public class MainMenu extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createMainMenuPanel() {
-        JPanel panel = new JPanel(null) {
-            protected void paintComponent(Graphics g) {
+    private JPanel createMainMenuPanel() 
+    {
+        JPanel panel = new JPanel(null) 
+        {
+            protected void paintComponent(Graphics g) 
+            {
                 super.paintComponent(g);
                 g.setColor(new Color(20, 20, 20));
                 g.fillRect(0, 0, getWidth(), getHeight());
@@ -92,7 +95,8 @@ public class MainMenu extends JFrame {
         return panel;
     }
 
-    private JPanel createSettingsPanel() {
+    private JPanel createSettingsPanel() 
+    {
         JPanel panel = new JPanel();
         panel.setBackground(new Color(40, 40, 40));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -129,7 +133,8 @@ public class MainMenu extends JFrame {
         return panel;
     }
 
-    private JButton createStyledButton(String text) {
+    private JButton createStyledButton(String text) 
+    {
         JButton button = new JButton(text);
         button.setFont(new Font("Courier New", Font.BOLD, 20));
         button.setBackground(new Color(255, 180, 220));
@@ -140,8 +145,10 @@ public class MainMenu extends JFrame {
                 BorderFactory.createEmptyBorder(8, 20, 8, 20)
         ));
 
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
+        button.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseEntered(MouseEvent e) 
+            {
                 button.setBackground(new Color(255, 210, 235));
             }
 
@@ -153,13 +160,16 @@ public class MainMenu extends JFrame {
         return button;
     }
 
-    private void startGame() {
-        if (selectedCharacter == null) {
+    private void startGame() 
+    {
+        if (selectedCharacter == null) 
+        {
             JOptionPane.showMessageDialog(this, "Please select a character first.");
-        } else {
+        } else 
+        {
             JOptionPane.showMessageDialog(this, "Starting game with: " + selectedCharacter);
-            // Qui avvii il gioco (passa al GamePanel o simile)
-            GamePanel gamePanel = new GamePanel(); // Assicurati che il gamePanel esista.
+           
+            GamePanel gamePanel = new GamePanel(); 
             JFrame gameFrame = new JFrame();
             gameFrame.setTitle("Game");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -169,16 +179,18 @@ public class MainMenu extends JFrame {
             gameFrame.setVisible(true);
             gamePanel.setupGame();
             gamePanel.startGameThread();
-            this.dispose();  // Chiudi il menu
+            this.dispose();  //Chiude il Menu
         }
     }
 
-    private void adjustVolume() {
+    private void adjustVolume() 
+    {
         int volume = volumeSlider.getValue();
         System.out.println("Volume: " + volume);
     }
 
-    private void showCharacterSelector() {
+    private void showCharacterSelector() 
+    {
         JDialog selectorDialog = new JDialog(this, "Select Your Character", true);
         selectorDialog.setSize(700, 250);
         selectorDialog.setLocationRelativeTo(this);
@@ -188,10 +200,11 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = {"Bubu", "Kiki", "Momo", "Zaza", "Toto"};
+        String[] characters = {"Claw", "AntlerLight", "FoxFire", "WIP"}; //Claw = Gatto, "AntlerLight = Cervo", "FoxFire = Volpe, WIP = WorkInProgress"
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
-        for (String name : characters) {
+        for (String name : characters) 
+        {
             JPanel p = new JPanel();
             p.setPreferredSize(new Dimension(120, 150));
             p.setLayout(new BorderLayout());
@@ -207,10 +220,13 @@ public class MainMenu extends JFrame {
             p.add(imgLabel, BorderLayout.CENTER);
             p.add(nameLabel, BorderLayout.SOUTH);
 
-            p.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
+            p.addMouseListener(new MouseAdapter() 
+            {
+                public void mouseClicked(MouseEvent e) 
+                {
                     selectedCharacter = name;
-                    for (String key : panelMap.keySet()) {
+                    for (String key : panelMap.keySet()) 
+                    {
                         panelMap.get(key).setBackground(Color.WHITE);
                     }
                     p.setBackground(Color.GREEN);
@@ -244,7 +260,8 @@ public class MainMenu extends JFrame {
         selectorDialog.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         SwingUtilities.invokeLater(MainMenu::new);
     }
 }
