@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements Runnable
         super.paintComponent(g);
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 
-        // Qui imposto il ritaglio per mostrare solo la mappa senza il nero esterno
+      
         g2.setClip(0, 0, tileSize * maxWorldCol, tileSize * maxWorldRow);
 
         tileM.draw(g2);
@@ -101,8 +101,7 @@ public class GamePanel extends JPanel implements Runnable
 
         player.draw(g2);
 
-        g2.setClip(null); // opzionale, reset del ritaglio
-
+        g2.setClip(null); 
         g2.dispose();
     }
 
