@@ -45,11 +45,22 @@
   - Aggiunta musiche
   - Sistemati problemi con gli assert dove rimanevano alcuni blocchi vuoti senza che si caricavano
 
+- **[GabrielBini07]**
+  - Realizzazione dell'immagine della chiave e della porta
+
 ### 21/05
 - **[GabrielBini07]**
   - Implementazione del Menu principale del gioco
   - Assegnazione dei nomi dei personaggi 
+  - Sistemazione movimenti del gatto verso sinistra nella classe Player
 
 - **[Clemm0]**
   - Aggiunta impostazioni e salvataggio di suddette
+
+### 22/05
+- **[GabrielBini07]**
+  - Aggiunta dei commenti nelle parti principali del codice
+  - Implementazione di un altro personaggio (con animazioni verso tutte le direzioni)
+  - Implementazione del muro 
+
 ---

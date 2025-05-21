@@ -254,8 +254,10 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         switch (direction) {
-            case "left" -> {
-                switch (spriteNum) {
+            case "left" -> 
+            {
+                switch (spriteNum) 
+                {
                     case 0 -> image = left0;
                     case 1 -> image = left1;
                     case 2 -> image = left2;
