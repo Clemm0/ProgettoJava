@@ -52,4 +52,5 @@
 
 - **[Clemm0]**
   - Aggiunta impostazioni e salvataggio di suddette
+  - Sistemata la telecamera
 ---

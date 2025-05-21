@@ -1,13 +1,14 @@
 package Main;
 
+import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 import Tiles.TileManager;
 import entity.Player;
 import object.SuperObject;
 
-public class GamePanel extends JPanel implements Runnable 
-{
+public class GamePanel extends JPanel implements Runnable {
     final int originalSize = 16;
     final int scale = 4;
     public final int tileSize = originalSize * scale;
@@ -25,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public Player player = new Player(this, keyH,"cat");
+    public Player player = new Player(this, keyH, "cat");
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     public AssetSetter aSetter = new AssetSetter(this);
@@ -86,22 +87,23 @@ public class GamePanel extends JPanel implements Runnable
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g;
 
-        // Qui imposto il ritaglio per mostrare solo la mappa senza il nero esterno
-        g2.setClip(0, 0, tileSize * maxWorldCol, tileSize * maxWorldRow);
+        // Center the camera on the player
+        int cameraX = player.worldX - screenWidth / 2 + tileSize / 2;
+        int cameraY = player.worldY - screenHeight / 2 + tileSize / 2;
 
-        tileM.draw(g2);
+        // Clamp camera to map bounds
+        cameraX = Math.max(0, Math.min(cameraX, maxWorldSize - screenWidth));
+        cameraY = Math.max(0, Math.min(cameraY, maxWorldHeight - screenHeight));
 
+        tileM.draw(g2, cameraX, cameraY);
         for (SuperObject obj1 : obj) {
             if (obj1 != null) {
-                obj1.draw(g2, this);
+                obj1.draw(g2, this, cameraX, cameraY);
             }
         }
-
-        player.draw(g2);
-
-        g2.setClip(null); // opzionale, reset del ritaglio
+        player.draw(g2, cameraX, cameraY);
 
         g2.dispose();
     }

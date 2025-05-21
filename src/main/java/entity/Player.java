@@ -53,26 +53,78 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {/*
-            up0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up0.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up2.png"));
-            up3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up3.png"));
-            up4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Up4.png"));
-            down0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down0.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down2.png"));
-            down3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down3.png"));
-            down4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Down4.png"));*/
+              * up0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Up0.png"));
+              * up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Up1.png"));
+              * up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Up2.png"));
+              * up3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Up3.png"));
+              * up4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Up4.png"));
+              * down0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Down0.png"));
+              * down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Down1.png"));
+              * down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Down2.png"));
+              * down3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Down3.png"));
+              * down4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name +
+              * "/Down4.png"));
+              */
             left0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left0.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left1.png"));
             left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left2.png"));
             left3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left3.png"));
             left4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Left4.png"));/*
-            right0 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right0.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/res/player/" + name + "/Right4.png"));*/
+                                                                                                        * right0 =
+                                                                                                        * ImageIO.read(
+                                                                                                        * getClass().
+                                                                                                        * getResourceAsStream
+                                                                                                        * (
+                                                                                                        * "/res/player/"
+                                                                                                        * + name +
+                                                                                                        * "/Right0.png")
+                                                                                                        * );
+                                                                                                        * right1 =
+                                                                                                        * ImageIO.read(
+                                                                                                        * getClass().
+                                                                                                        * getResourceAsStream
+                                                                                                        * (
+                                                                                                        * "/res/player/"
+                                                                                                        * + name +
+                                                                                                        * "/Right1.png")
+                                                                                                        * );
+                                                                                                        * right2 =
+                                                                                                        * ImageIO.read(
+                                                                                                        * getClass().
+                                                                                                        * getResourceAsStream
+                                                                                                        * (
+                                                                                                        * "/res/player/"
+                                                                                                        * + name +
+                                                                                                        * "/Right2.png")
+                                                                                                        * );
+                                                                                                        * right3 =
+                                                                                                        * ImageIO.read(
+                                                                                                        * getClass().
+                                                                                                        * getResourceAsStream
+                                                                                                        * (
+                                                                                                        * "/res/player/"
+                                                                                                        * + name +
+                                                                                                        * "/Right3.png")
+                                                                                                        * );
+                                                                                                        * right4 =
+                                                                                                        * ImageIO.read(
+                                                                                                        * getClass().
+                                                                                                        * getResourceAsStream
+                                                                                                        * (
+                                                                                                        * "/res/player/"
+                                                                                                        * + name +
+                                                                                                        * "/Right4.png")
+                                                                                                        * );
+                                                                                                        */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -267,24 +319,26 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         switch (direction) {
-            /*case "up" -> {
-                image = up1;
-                switch (spriteNum) {
-                    case 0 -> image = up0;
-                    case 2 -> image = up2;
-                    case 3 -> image = up3;
-                    case 4 -> image = up4;
-                }
-            }
-            case "down" -> {
-                image = down1;
-                switch (spriteNum) {
-                    case 0 -> image = down0;
-                    case 2 -> image = down2;
-                    case 3 -> image = down3;
-                    case 4 -> image = down4;
-                }
-            }*/
+            /*
+             * case "up" -> {
+             * image = up1;
+             * switch (spriteNum) {
+             * case 0 -> image = up0;
+             * case 2 -> image = up2;
+             * case 3 -> image = up3;
+             * case 4 -> image = up4;
+             * }
+             * }
+             * case "down" -> {
+             * image = down1;
+             * switch (spriteNum) {
+             * case 0 -> image = down0;
+             * case 2 -> image = down2;
+             * case 3 -> image = down3;
+             * case 4 -> image = down4;
+             * }
+             * }
+             */
             case "left" -> {
                 image = left1;
                 switch (spriteNum) {
@@ -294,16 +348,24 @@ public class Player extends Entity {
                     case 4 -> image = left4;
                 }
             }
-            /*case "right" -> {
-                image = right1;
-                switch (spriteNum) {
-                    case 0 -> image = right0;
-                    case 2 -> image = right2;
-                    case 3 -> image = right3;
-                    case 4 -> image = right4;
-                }
-            }*/
+            /*
+             * case "right" -> {
+             * image = right1;
+             * switch (spriteNum) {
+             * case 0 -> image = right0;
+             * case 2 -> image = right2;
+             * case 3 -> image = right3;
+             * case 4 -> image = right4;
+             * }
+             * }
+             */
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void draw(Graphics2D g2, int cameraX, int cameraY) {
+        int drawX = worldX - cameraX;
+        int drawY = worldY - cameraY;
+        g2.drawImage(image, drawX, drawY, gp.tileSize, gp.tileSize, null);
     }
 }

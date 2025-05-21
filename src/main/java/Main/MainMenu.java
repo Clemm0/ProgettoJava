@@ -39,6 +39,7 @@ public class MainMenu extends JFrame {
 
     public MainMenu() {
         setTitle("Game Main Menu");
+        setUndecorated(true);
         setSize(800, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -48,7 +49,6 @@ public class MainMenu extends JFrame {
         cardPanel = new JPanel(cardLayout);
 
         cardPanel.add(createMainMenuPanel(), "main");
-        cardPanel.add(createSettingsPanel(), "settings");
 
         add(cardPanel);
         setVisible(true);
@@ -63,7 +63,7 @@ public class MainMenu extends JFrame {
             }
         };
 
-        JLabel title = new JLabel("Mystic Fur - Venture", JLabel.CENTER);
+        JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
         FontMetrics metrics = title.getFontMetrics(title.getFont());
@@ -78,7 +78,7 @@ public class MainMenu extends JFrame {
 
         JButton settingsButton = createStyledButton("Settings");
         settingsButton.setBounds(290, 210, 220, 50);
-        settingsButton.addActionListener(e -> cardLayout.show(cardPanel, "settings"));
+        settingsButton.addActionListener(e -> new Setting());
         panel.add(settingsButton);
 
         JButton exitButton = createStyledButton("Exit the Game");
@@ -140,8 +140,7 @@ public class MainMenu extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
+                BorderFactory.createEmptyBorder(8, 20, 8, 20)));
 
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -164,6 +163,7 @@ public class MainMenu extends JFrame {
 
             GamePanel gamePanel = new GamePanel();
             JFrame gameFrame = new JFrame();
+            gameFrame.setUndecorated(true);
             gameFrame.setTitle("Game");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.add(gamePanel);
@@ -191,7 +191,7 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = {"Claw", "AntlerLight", "FoxFire", "WIP"};
+        String[] characters = { "Claw", "AntlerLight", "FoxFire", "WIP" };
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
         for (String name : characters) {
@@ -203,7 +203,8 @@ public class MainMenu extends JFrame {
 
             JLabel imgLabel;
             if (name.equals("Claw")) {
-                ImageIcon icon = new ImageIcon("C:\\Users\\mpolo\\Documents\\GitHub\\ProgettoJava\\src\\main\\java\\res\\player\\cat\\CatStill.png");
+                ImageIcon icon = new ImageIcon(
+                        "C:\\Users\\mpolo\\Documents\\GitHub\\ProgettoJava\\src\\main\\java\\res\\player\\cat\\CatStill.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
