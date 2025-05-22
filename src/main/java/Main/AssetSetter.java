@@ -1,6 +1,6 @@
 package Main;
 
-import object.ObjDoor;
+import object.ObjDoor2;
 import object.ObjFlag;
 import object.ObjKey;
 
@@ -21,7 +21,7 @@ public class AssetSetter {
         gp.obj[0].worldY = 8 * gp.tileSize;
 
         // Posiziona la porta all'interno del mondo (3,4)
-        gp.obj[1] = new ObjDoor();
+        gp.obj[1] = new ObjDoor2();
         gp.obj[1].worldX = 3 * gp.tileSize;
         gp.obj[1].worldY = 4 * gp.tileSize;
 
@@ -29,5 +29,8 @@ public class AssetSetter {
         gp.obj[2] = new ObjFlag();
         gp.obj[2].worldX = 2 * gp.tileSize;
         gp.obj[2].worldY = 6 * gp.tileSize;
+
+        // Aggiungere i blocchi per le connessioni di Way2Logic anche se non son completi quindi per sto update nulla
+        // Nel prossimo update si usa un engune di base e si completa tutto
     }
 }

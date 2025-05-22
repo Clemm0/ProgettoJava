@@ -73,4 +73,5 @@
   - Aggiunta personaggi
   - Implementazione FPS
   - Aggiunta logica a tre blocchi
+  - Aggiunta di Way2Logic anche se richiede di essere sistemata qua e la
 ---

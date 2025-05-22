@@ -30,9 +30,11 @@ import javax.swing.KeyStroke;
 public class Setting extends JFrame {
     private static final String SETTINGS_FILE = "Setting.ser";
     private SettingsData settings = new SettingsData();
+    private final JFrame mainFrame; // riferimento alla finestra principale
 
     // Costruttore principale del menu di pausa
-    public Setting() {
+    public Setting(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
         setTitle("Pause Menu");
 
         loadSettings();
@@ -84,7 +86,10 @@ public class Setting extends JFrame {
         }
 
         // Azioni per ciascun pulsante
-        settingsBtn.addActionListener(e -> showSettingsPage(bgColor, fgColor, retroFont));
+        settingsBtn.addActionListener(e -> {
+            saveSettings();
+            showSettingsPage(bgColor, fgColor, retroFont);
+        });
 
         resumeBtn.addActionListener(e -> {
             saveSettings();
@@ -243,14 +248,17 @@ public class Setting extends JFrame {
         sliders[0].addChangeListener(e -> {
             settings.generalVolume = sliders[0].getValue();
             saveSettings();
+            GamePanel.updateGeneralVolume(settings.generalVolume);
         });
         sliders[1].addChangeListener(e -> {
             settings.sfxVolume = sliders[1].getValue();
             saveSettings();
+            GamePanel.updateSfxVolume(settings.sfxVolume);
         });
         sliders[2].addChangeListener(e -> {
             settings.musicVolume = sliders[2].getValue();
             saveSettings();
+            GamePanel.updateMusicVolume(settings.musicVolume);
         });
 
         JButton closeBtn = new JButton("Back");
@@ -286,6 +294,7 @@ public class Setting extends JFrame {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+
     // Pannello delle impostazioni video (schermo e FPS)
     private void showScreenPanel(Color bgColor, Color fgColor, Font retroFont) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -315,6 +324,19 @@ public class Setting extends JFrame {
         fullscreenBox.addActionListener(e -> {
             settings.fullscreen = fullscreenBox.isSelected();
             saveSettings();
+
+            if (mainFrame != null) {
+                mainFrame.dispose();
+                mainFrame.setUndecorated(true); // sempre senza barra superiore
+                if (settings.fullscreen) {
+                    mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    mainFrame.setExtendedState(JFrame.NORMAL);
+                    mainFrame.setSize(800, 550); // <-- ripristina dimensione originale
+                    mainFrame.setLocationRelativeTo(null); // <-- centra la finestra
+                }
+                mainFrame.setVisible(true);
+            }
         });
 
         String[] fpsLabels = { "30", "40", "60", "90", "120", "150", "Unlimited" };
@@ -456,5 +478,9 @@ public class Setting extends JFrame {
         } else {
             return new SettingsData();
         }
+    }
+
+    public static SettingsData getCurrentSettings() {
+        return loadSettingsStatic();
     }
 }

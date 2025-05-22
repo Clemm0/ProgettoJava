@@ -1,6 +1,5 @@
 package Main;
 
-
 // Importazione delle classi necessarie per GUI, eventi e componenti
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -8,8 +7,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -44,60 +43,70 @@ public class MainMenu extends JFrame {
     // Costruttore del menu principale
     public MainMenu() {
         setTitle("Game Main Menu");
-        setSize(800, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setResizable(false);
-        setUndecorated(true);
+
+        if (Setting.getCurrentSettings().fullscreen) {
+            setUndecorated(true);
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        } else {
+            setUndecorated(true);
+            setSize(800, 550);
+            setExtendedState(JFrame.NORMAL);
+            setLocationRelativeTo(null);
+        }
+
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
-        // Aggiunta del pannello principale
         cardPanel.add(createMainMenuPanel(), "main");
-
         add(cardPanel);
         setVisible(true);
     }
 
     // Metodo per creare il pannello del menu principale
     private JPanel createMainMenuPanel() {
-        JPanel panel = new JPanel(null) {
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(20, 20, 20));
-                g.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(20, 20, 20));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new java.awt.Insets(20, 0, 20, 0);
 
-        // Titolo del gioco
+        // Titolo
         JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
-        FontMetrics metrics = title.getFontMetrics(title.getFont());
-        int stringWidth = metrics.stringWidth(title.getText());
-        title.setBounds((800 - stringWidth) / 2, 40, stringWidth, 60);
-        panel.add(title);
-        // Bottone Play
+        gbc.gridy = 0;
+        panel.add(title, gbc);
+
+        // Play
         JButton playButton = createStyledButton("Play");
-        playButton.setBounds(290, 140, 220, 50);
+        playButton.setPreferredSize(new Dimension((int) (getWidth() * 0.3), 50));
+        gbc.gridy = 1;
         playButton.addActionListener(e -> startGame());
-        panel.add(playButton);
-        // Bottone Settings
+        panel.add(playButton, gbc);
+
+        // Settings
         JButton settingsButton = createStyledButton("Settings");
-        settingsButton.setBounds(290, 210, 220, 50);
-        settingsButton.addActionListener(e -> new Setting());
-        panel.add(settingsButton);
-        // Bottone esci dal gioco
+        settingsButton.setPreferredSize(new Dimension((int) (getWidth() * 0.3), 50));
+        gbc.gridy = 2;
+        settingsButton.addActionListener(e -> new Setting(this));
+        panel.add(settingsButton, gbc);
+
+        // Exit
         JButton exitButton = createStyledButton("Exit the Game");
-        exitButton.setBounds(290, 280, 220, 50);
+        exitButton.setPreferredSize(new Dimension((int) (getWidth() * 0.3), 50));
+        gbc.gridy = 3;
         exitButton.addActionListener(e -> System.exit(0));
-        panel.add(exitButton);
-        // Bottone selezione del personaggio
+        panel.add(exitButton, gbc);
+
+        // Select Character
         JButton selectCharacterButton = createStyledButton("Select Character");
         selectCharacterButton.setFont(retroFont.deriveFont(Font.PLAIN, 14f));
-        selectCharacterButton.setBounds(600, 450, 170, 50);
+        selectCharacterButton.setPreferredSize(new Dimension((int) (getWidth() * 0.3), 50));
+        gbc.gridy = 4;
         selectCharacterButton.addActionListener(e -> showCharacterSelector());
-        panel.add(selectCharacterButton);
+        panel.add(selectCharacterButton, gbc);
 
         return panel;
     }
@@ -133,7 +142,7 @@ public class MainMenu extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Starting game with: " + selectedCharacter);
 
-            GamePanel gamePanel = new GamePanel(selectedCharacter); 
+            GamePanel gamePanel = new GamePanel(selectedCharacter);
             JFrame gameFrame = new JFrame();
             gameFrame.setTitle("Game");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -194,7 +203,7 @@ public class MainMenu extends JFrame {
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-             // Aggiunta dei componenti al pannello del personaggio
+            // Aggiunta dei componenti al pannello del personaggio
             p.add(Box.createVerticalStrut(10));
             p.add(imgLabel);
             p.add(Box.createVerticalStrut(5));

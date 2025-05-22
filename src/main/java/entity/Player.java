@@ -86,7 +86,7 @@ public class Player extends Entity {
         }
     }
 
-     // Metodo chiamato ogni frame per aggiornare lo stato del giocatore
+    // Metodo chiamato ogni frame per aggiornare lo stato del giocatore
     public void update() {
         if (keyH.escapePressed) {
             keyH.escapePressed = false;
@@ -98,7 +98,7 @@ public class Player extends Entity {
             int nextX = worldX;
             int nextY = worldY;
 
-             // Gestisce l’input del movimento e imposta la direzione
+            // Gestisce l’input del movimento e imposta la direzione
             if (keyH.upPressed) {
                 direction = "up";
                 nextY -= gp.tileSize;
@@ -171,9 +171,11 @@ public class Player extends Entity {
             if (spriteCounter > 10) {
                 spriteNum++;
                 if (direction.equals("left") || direction.equals("right")) {
-                    if (spriteNum > 4) spriteNum = 0;
+                    if (spriteNum > 4)
+                        spriteNum = 0;
                 } else { // up or down hanno 2 frame
-                    if (spriteNum > 1) spriteNum = 0;
+                    if (spriteNum > 1)
+                        spriteNum = 0;
                 }
                 spriteCounter = 0;
             }
@@ -181,19 +183,23 @@ public class Player extends Entity {
             // Aggiorna la posizione in base alla destinazione
             if (worldX < targetX) {
                 worldX += speed;
-                if (worldX > targetX) worldX = targetX;
+                if (worldX > targetX)
+                    worldX = targetX;
             }
             if (worldX > targetX) {
                 worldX -= speed;
-                if (worldX < targetX) worldX = targetX;
+                if (worldX < targetX)
+                    worldX = targetX;
             }
             if (worldY < targetY) {
                 worldY += speed;
-                if (worldY > targetY) worldY = targetY;
+                if (worldY > targetY)
+                    worldY = targetY;
             }
             if (worldY > targetY) {
                 worldY -= speed;
-                if (worldY < targetY) worldY = targetY;
+                if (worldY < targetY)
+                    worldY = targetY;
             }
             if (worldX == targetX && worldY == targetY) {
                 moving = false;
@@ -201,7 +207,7 @@ public class Player extends Entity {
         }
     }
 
-     // Controlla se il giocatore può muoversi in una certa posizione
+    // Controlla se il giocatore può muoversi in una certa posizione
     private boolean canMoveTo(int nextX, int nextY) {
         if (nextX < 0 || nextY < 0 ||
                 nextX > gp.maxWorldSize - gp.tileSize ||
@@ -211,9 +217,10 @@ public class Player extends Entity {
         return true;
     }
 
-     // Tenta di spingere un oggetto (es. la chiave) se possibile
+    // Tenta di spingere un oggetto (es. la chiave) se possibile
     private boolean tryPushObject(int i) {
-        if (gp.obj[i] == null) return false;
+        if (gp.obj[i] == null)
+            return false;
 
         String objectName = gp.obj[i].name;
 
@@ -221,7 +228,7 @@ public class Player extends Entity {
             case "Key" -> {
                 int keyX = gp.obj[i].worldX;
                 int keyY = gp.obj[i].worldY;
-                
+
                 // Sposta l’oggetto nella direzione giusta
                 switch (direction) {
                     case "up" -> keyY -= gp.tileSize;
@@ -230,7 +237,7 @@ public class Player extends Entity {
                     case "right" -> keyX += gp.tileSize;
                 }
 
-                 // Controlli su collisioni, confini e oggetti sovrapposti
+                // Controlli su collisioni, confini e oggetti sovrapposti
                 int tileCol = keyX / gp.tileSize;
                 int tileRow = keyY / gp.tileSize;
 
@@ -245,7 +252,8 @@ public class Player extends Entity {
                 boolean occupied = false;
                 for (int j = 0; j < gp.obj.length; j++) {
                     SuperObject obj = gp.obj[j];
-                    if (obj != null && j != i && obj.worldX == keyX && obj.worldY == keyY && !"Door".equals(obj.name)) {
+                    if (obj != null && j != i && obj.worldX == keyX && obj.worldY == keyY
+                            && !("Door1".equals(obj.name) || "Door2".equals(obj.name) || "Door3".equals(obj.name))) {
                         occupied = true;
                         break;
                     }
@@ -257,7 +265,9 @@ public class Player extends Entity {
                     gp.obj[i].worldY = keyY;
                     for (int j = 0; j < gp.obj.length; j++) {
                         SuperObject obj = gp.obj[j];
-                        if (obj != null && "Door".equals(obj.name) && obj.worldX == keyX && obj.worldY == keyY) {
+                        if (obj != null
+                                && ("Door1".equals(obj.name) || "Door2".equals(obj.name) || "Door3".equals(obj.name))
+                                && obj.worldX == keyX && obj.worldY == keyY) {
                             gp.playSE(2);
                             gp.obj[j] = null;
                             gp.obj[i] = null;
@@ -269,7 +279,7 @@ public class Player extends Entity {
                 return false;
             }
             case "Flag" -> {
-                 // Passaggio al livello successivo
+                // Passaggio al livello successivo
                 gp.playSE(1);
                 level++;
                 try {
@@ -288,12 +298,12 @@ public class Player extends Entity {
 
     // Mostra il menu di pausa
     private void showPauseMenu() {
-        new Setting();
+        javax.swing.JFrame frame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(gp);
+        new Setting(frame);
     }
 
-        // Disegna il giocatore sullo schermo in base alla direzione e al frame
-        public void draw(Graphics2D g2, int cameraX, int cameraY) 
-        {
+    // Disegna il giocatore sullo schermo in base alla direzione e al frame
+    public void draw(Graphics2D g2, int cameraX, int cameraY) {
         int screenX = this.worldX - cameraX;
         int screenY = this.worldY - cameraY;
 
