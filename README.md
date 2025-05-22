@@ -62,7 +62,8 @@
 - **[GabrielBini07]**
   - Aggiunta dei commenti nelle parti principali del codice
   - Implementazione di un altro personaggio (con animazioni verso tutte le direzioni)
-  - Implementazione del muro 
+  - Implementazione del muro completo
+  - Implementazione della porta
 
 - **[Clemm0]**
   - Aggiunta la scelta personaggio

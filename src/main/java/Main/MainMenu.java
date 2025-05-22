@@ -36,8 +36,7 @@ public class MainMenu extends JFrame {
     private String selectedCharacter = null;
     private final Font retroFont = new Font("Monospaced", Font.BOLD, 18);
     private final Color fgColor = new Color(0, 255, 0);
-
-    // Main Menu del gioco
+    //Main Menu del gioco
     public MainMenu() {
         setTitle("Game Main Menu");
         setSize(800, 550);
@@ -53,8 +52,7 @@ public class MainMenu extends JFrame {
         add(cardPanel);
         setVisible(true);
     }
-
-    // Pannello per il menu principale
+    //Pannello per il menu principale
     private JPanel createMainMenuPanel() {
         JPanel panel = new JPanel(null) {
             protected void paintComponent(Graphics g) {
@@ -63,7 +61,7 @@ public class MainMenu extends JFrame {
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-        // Titolo del gioco
+        //Titolo del gioco
         JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
@@ -71,22 +69,22 @@ public class MainMenu extends JFrame {
         int stringWidth = metrics.stringWidth(title.getText());
         title.setBounds((800 - stringWidth) / 2, 40, stringWidth, 60);
         panel.add(title);
-        // Bottone Play
+        //Bottone Play
         JButton playButton = createStyledButton("Play");
         playButton.setBounds(290, 140, 220, 50);
         playButton.addActionListener(e -> startGame());
         panel.add(playButton);
-        // Bottone Settings
+        //Bottone Settings
         JButton settingsButton = createStyledButton("Settings");
         settingsButton.setBounds(290, 210, 220, 50);
         settingsButton.addActionListener(e -> new Setting());
         panel.add(settingsButton);
-        // Bottone esci dal gioco
+        //Bottone esci dal gioco
         JButton exitButton = createStyledButton("Exit the Game");
         exitButton.setBounds(290, 280, 220, 50);
         exitButton.addActionListener(e -> System.exit(0));
         panel.add(exitButton);
-        // Bottone selezione del personaggio
+        //Bottone selezione del personaggio
         JButton selectCharacterButton = createStyledButton("Select Character");
         selectCharacterButton.setFont(retroFont.deriveFont(Font.PLAIN, 14f));
         selectCharacterButton.setBounds(600, 450, 170, 50);
@@ -121,11 +119,12 @@ public class MainMenu extends JFrame {
 
     private void startGame() {
         if (selectedCharacter == null) {
+            
             JOptionPane.showMessageDialog(this, "Please select a character first.");
         } else {
             JOptionPane.showMessageDialog(this, "Starting game with: " + selectedCharacter);
 
-            GamePanel gamePanel = new GamePanel(selectedCharacter); 
+            GamePanel gamePanel = new GamePanel();
             JFrame gameFrame = new JFrame();
             gameFrame.setTitle("Game");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -151,11 +150,8 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = { "Cat", "Fox", "FoxFire", "WIP" };
+        String[] characters = { "Cat", "Arctic Fox", "FoxFire", "WIP" };
         HashMap<String, JPanel> panelMap = new HashMap<>();
-
-        // Use a temporary variable to track selection in the dialog
-        final String[] tempSelected = { selectedCharacter };
 
         for (String name : characters) {
             JPanel p = new JPanel();
@@ -165,17 +161,14 @@ public class MainMenu extends JFrame {
             p.setBackground(name.equals(selectedCharacter) ? Color.GREEN : Color.WHITE);
 
             JLabel imgLabel;
-            String folderName = name.replaceAll("\\s+", "").toLowerCase();
-            String path = "src/main/java/res/player/" + folderName + "/Left0.png";
-            ImageIcon icon = new ImageIcon(path);
-            Image img = icon.getImage();
-            if (img == null || icon.getIconWidth() <= 0) {
-                imgLabel = new JLabel("?");
-                imgLabel.setPreferredSize(new Dimension(64, 64));
-                imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                imgLabel.setVerticalAlignment(SwingConstants.CENTER);
+            if (name.equals("Cat")) {
+                ImageIcon icon = new ImageIcon(
+                        "src/main/java/res/player/cat/Left0.png");
+                Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+                imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
-                Image scaledImg = img.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+                ImageIcon icon = new ImageIcon(name.toLowerCase() + ".png");
+                Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg));
             }
             imgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -192,7 +185,7 @@ public class MainMenu extends JFrame {
 
             p.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    tempSelected[0] = name;
+                    selectedCharacter = name;
                     for (String key : panelMap.keySet()) {
                         panelMap.get(key).setBackground(Color.WHITE);
                     }
@@ -216,10 +209,7 @@ public class MainMenu extends JFrame {
         confirmButton.setBackground(new Color(180, 255, 180));
         confirmButton.setFocusPainted(false);
         confirmButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        confirmButton.addActionListener(e -> {
-            selectedCharacter = tempSelected[0]; // Save the selection
-            selectorDialog.dispose();
-        });
+        confirmButton.addActionListener(e -> selectorDialog.dispose());
 
         JPanel bottom = new JPanel();
         bottom.setBackground(new Color(30, 30, 30));

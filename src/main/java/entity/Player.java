@@ -25,8 +25,8 @@ public class Player extends Entity {
 
     private int targetX, targetY;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
-        this.name = GamePanel.selectedCharacter;
+    public Player(GamePanel gp, KeyHandler keyH, String name) {
+        this.name = name;
         this.gp = gp;
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
