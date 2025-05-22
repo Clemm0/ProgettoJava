@@ -161,9 +161,9 @@ public class MainMenu extends JFrame {
             p.setBackground(name.equals(selectedCharacter) ? Color.GREEN : Color.WHITE);
 
             JLabel imgLabel;
-            if (name.equals("Claw")) {
+            if (name.equals("Cat")) {
                 ImageIcon icon = new ImageIcon(
-                        "C:/Users/mpolo/Documents/GitHub/ProgettoJava/src/main/java/res/player/cat/Left0.png");
+                        "src/main/java/res/player/cat/Left0.png");
                 Image scaledImg = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 imgLabel = new JLabel(new ImageIcon(scaledImg));
             } else {
