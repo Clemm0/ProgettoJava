@@ -16,9 +16,7 @@ public final class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[14]; // 14 blocchi diversi
-        // (is | name | you | youT | wall | wallT | water1 | waterT | door | doorT | key
-        // | keyT | flag | flagT | lockT | ulockT | sinkT | stopT | winT)
+        tile = new Tile[3];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/res/maps/map01.maps");

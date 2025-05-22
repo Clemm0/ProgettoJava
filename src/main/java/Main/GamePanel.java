@@ -11,6 +11,7 @@ import object.SuperObject;
 public class GamePanel extends JPanel implements Runnable {
     final int originalSize = 16;
     final int scale = 4;
+    public static int Size = 64;
     public final int tileSize = originalSize * scale;
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
@@ -22,8 +23,6 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = maxScreenRow;
     public final int maxWorldSize = tileSize * maxWorldCol;
     public final int maxWorldHeight = tileSize * maxWorldRow;
-    private int frameCounter = 0;
-    private final int switchFrames = 30;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
@@ -39,6 +38,11 @@ public class GamePanel extends JPanel implements Runnable {
     Sound se = new Sound();
 
     private int drawCount = 0;
+
+    // Add your logic block and map references here
+    public Way2Logic.Logic.Is isBlock;
+    public String[][] map;
+    public int isX, isY;
 
     public GamePanel(String selectedCharacter) {
         GamePanel.selectedCharacter = selectedCharacter.toLowerCase();
@@ -68,7 +72,6 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         while (gameThread != null) {
-            // Always get the latest FPS value
             int currentFPS = getFPS();
             double drawInterval = 1000000000.0 / currentFPS;
 
@@ -95,6 +98,10 @@ public class GamePanel extends JPanel implements Runnable {
             if (o != null) {
                 o.update();
             }
+        }
+        if (isBlock != null && map != null) {
+            isBlock.updateLoc(map, isX, isY);
+            isBlock.ChangeProperties();
         }
     }
 
