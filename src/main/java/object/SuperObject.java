@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import Main.GamePanel;
 
 public class SuperObject {
-    GamePanel sgp = new GamePanel();
+    GamePanel sgp = new GamePanel(GamePanel.selectedCharacter);
     public BufferedImage image;
     public String name;
     public boolean collision = true;

@@ -26,7 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public Player player = new Player(this, keyH, "cat");
+    public static String selectedCharacter;
+    public Player player;
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     public AssetSetter aSetter = new AssetSetter(this);
@@ -35,12 +36,15 @@ public class GamePanel extends JPanel implements Runnable {
     Sound music = new Sound();
     Sound se = new Sound();
 
-    public GamePanel() {
+    public GamePanel(String selectedCharacter) {
+        GamePanel.selectedCharacter = selectedCharacter.toLowerCase();
         this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
         this.setBackground(java.awt.Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
+        player = new Player(this, keyH);
     }
 
     public void setupGame() {
@@ -89,25 +93,20 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Center the camera on the player
         int cameraX = player.worldX - screenWidth / 2 + tileSize / 2;
         int cameraY = player.worldY - screenHeight / 2 + tileSize / 2;
 
-        // Clamp camera so it doesn't show outside the map
         cameraX = Math.max(0, Math.min(cameraX, maxWorldSize - screenWidth));
         cameraY = Math.max(0, Math.min(cameraY, maxWorldHeight - screenHeight));
 
-        // Draw tiles
         tileM.draw(g2, cameraX, cameraY);
 
-        // Draw objects
         for (SuperObject obj1 : obj) {
             if (obj1 != null) {
                 obj1.draw(g2, this, cameraX, cameraY);
             }
         }
 
-        // Draw player
         player.draw(g2, cameraX, cameraY);
 
         g2.dispose();

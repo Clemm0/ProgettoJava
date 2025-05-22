@@ -64,4 +64,8 @@
   - Implementazione di un altro personaggio (con animazioni verso tutte le direzioni)
   - Implementazione del muro 
 
+- **[Clemm0]**
+  - Aggiunta la scelta personaggio
+  - Aggiunta personaggi
+  
 ---

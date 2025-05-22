@@ -25,17 +25,8 @@ public class Player extends Entity {
 
     private int targetX, targetY;
 
-    int spriteCounter = 0;
-    int spriteNum = 0;
-
-    // Immagini animazioni
-    Image left0, left1, left2, left3, left4;
-    Image right0, right1, right2, right3, right4;
-    Image up0, up1;
-    Image down0, down1;
-
-    public Player(GamePanel gp, KeyHandler keyH, String name) {
-        this.name = name;
+    public Player(GamePanel gp, KeyHandler keyH) {
+        this.name = GamePanel.selectedCharacter;
         this.gp = gp;
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
