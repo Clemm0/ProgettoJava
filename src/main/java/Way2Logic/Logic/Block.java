@@ -1,4 +1,4 @@
-package Way2Logic.Logic;
+package Way2Logic.Logic; // Nice pun (no pun intended)
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -9,7 +9,6 @@ import Main.GamePanel;
 
 public class Block {
     public static boolean collision, you, push, sink, stop, lock, ulock, win;
-
     public BufferedImage image;
     protected BufferedImage image1, image2;
     public String name;
@@ -25,8 +24,8 @@ public class Block {
     public Block(String name) {
         this.name = name;
         collision = true;
-        you = false;
         push = true;
+        you = false;
         sink = false;
         stop = false;
         lock = false;

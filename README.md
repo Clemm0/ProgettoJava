@@ -68,4 +68,5 @@
   - Aggiunta la scelta personaggio
   - Aggiunta personaggi
   - Implementazione FPS
+  - Aggiunta logica a tre blocchi
 ---

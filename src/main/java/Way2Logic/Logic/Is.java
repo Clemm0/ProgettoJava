@@ -1,4 +1,4 @@
-package Way2Logic.Logic; // Nice pun (no pun intended)
+package Way2Logic.Logic;
 
 public class Is extends Block {
     private String[][] matrix;
