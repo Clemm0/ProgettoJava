@@ -36,7 +36,7 @@ public class MainMenu extends JFrame {
     private String selectedCharacter = null;
     private final Font retroFont = new Font("Monospaced", Font.BOLD, 18);
     private final Color fgColor = new Color(0, 255, 0);
-
+    //Main Menu del gioco
     public MainMenu() {
         setTitle("Game Main Menu");
         setSize(800, 550);
@@ -52,7 +52,7 @@ public class MainMenu extends JFrame {
         add(cardPanel);
         setVisible(true);
     }
-
+    //Pannello per il menu principale
     private JPanel createMainMenuPanel() {
         JPanel panel = new JPanel(null) {
             protected void paintComponent(Graphics g) {
@@ -61,7 +61,7 @@ public class MainMenu extends JFrame {
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-
+        //Titolo del gioco
         JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
         title.setForeground(fgColor);
@@ -69,22 +69,22 @@ public class MainMenu extends JFrame {
         int stringWidth = metrics.stringWidth(title.getText());
         title.setBounds((800 - stringWidth) / 2, 40, stringWidth, 60);
         panel.add(title);
-
+        //Bottone Play
         JButton playButton = createStyledButton("Play");
         playButton.setBounds(290, 140, 220, 50);
         playButton.addActionListener(e -> startGame());
         panel.add(playButton);
-
+        //Bottone Settings
         JButton settingsButton = createStyledButton("Settings");
         settingsButton.setBounds(290, 210, 220, 50);
         settingsButton.addActionListener(e -> new Setting());
         panel.add(settingsButton);
-
+        //Bottone esci dal gioco
         JButton exitButton = createStyledButton("Exit the Game");
         exitButton.setBounds(290, 280, 220, 50);
         exitButton.addActionListener(e -> System.exit(0));
         panel.add(exitButton);
-
+        //Bottone selezione del personaggio
         JButton selectCharacterButton = createStyledButton("Select Character");
         selectCharacterButton.setFont(retroFont.deriveFont(Font.PLAIN, 14f));
         selectCharacterButton.setBounds(600, 450, 170, 50);
@@ -119,6 +119,7 @@ public class MainMenu extends JFrame {
 
     private void startGame() {
         if (selectedCharacter == null) {
+            //M
             JOptionPane.showMessageDialog(this, "Please select a character first.");
         } else {
             JOptionPane.showMessageDialog(this, "Starting game with: " + selectedCharacter);

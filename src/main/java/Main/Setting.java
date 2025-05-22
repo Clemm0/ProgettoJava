@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
-
+//Implementazione delle impostazioni per il gioco 
 public class Setting extends JFrame {
     private static final String SETTINGS_FILE = "Setting.ser";
     private SettingsData settings = new SettingsData();
@@ -58,7 +58,7 @@ public class Setting extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(fgColor);
         title.setFont(retroFont);
-
+        //Menu di pausa
         JButton resumeBtn = new JButton("Resume");
         JButton quitBtn = new JButton("Quit");
         JButton settingsBtn = new JButton("Settings");
@@ -197,7 +197,7 @@ public class Setting extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(fgColor);
         title.setFont(retroFont);
-
+        //Volume 
         JLabel[] labels = {
                 new JLabel("General"),
                 new JLabel("SFX"),

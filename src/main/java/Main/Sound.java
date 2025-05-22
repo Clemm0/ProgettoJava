@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip;
 public class Sound {
     Clip clip;
     URL soundURL[] = new URL[5];
-
+//Implementazione della musica
     public Sound() {
         soundURL[0] = getClass().getResource("/res/sound/bgm.wav");
         soundURL[1] = getClass().getResource("/res/sound/win.wav");

@@ -1,7 +1,7 @@
 package object;
 
 import javax.imageio.ImageIO;
-
+//Implementazione della Bandiera
 public class ObjFlag extends SuperObject {
     public ObjFlag() {
         collision = false;
