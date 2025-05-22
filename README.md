@@ -65,4 +65,8 @@
   - Implementazione del muro completo
   - Implementazione della porta
 
+- **[Clemm0]**
+  - Aggiunta la scelta personaggio
+  - Aggiunta personaggi
+  
 ---
