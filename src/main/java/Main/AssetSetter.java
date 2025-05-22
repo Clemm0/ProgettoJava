@@ -23,5 +23,7 @@ public class AssetSetter {
         gp.obj[2] = new ObjFlag();
         gp.obj[2].worldX = 2 * gp.tileSize;
         gp.obj[2].worldY = 6 * gp.tileSize;
+
+        
     }
 }

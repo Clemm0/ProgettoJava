@@ -1,6 +1,4 @@
 is
-
-# Verbs
 pushT
 sinkT
 stopT
@@ -8,8 +6,6 @@ lockT
 ulockT
 winT
 youT
-
-# Adverbs
 doorT
 flagT
 keyT
