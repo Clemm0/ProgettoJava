@@ -150,7 +150,7 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = { "Claw", "AntlerLight", "FoxFire", "WIP" };
+        String[] characters = { "Cat", "Arctic Fox", "FoxFire", "WIP" };
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
         for (String name : characters) {
