@@ -169,7 +169,7 @@ public class MainMenu extends JFrame {
         charPanel.setLayout(new BoxLayout(charPanel, BoxLayout.X_AXIS));
         charPanel.setBackground(new Color(30, 30, 30));
 
-        String[] characters = { "Cat", "Fox", "FoxFire", "WIP" };
+        String[] characters = { "Cat", "Fox", "WIP"};
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
         final String[] tempSelected = { selectedCharacter };
