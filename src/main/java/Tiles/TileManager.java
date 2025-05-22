@@ -34,18 +34,6 @@ public final class TileManager {
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/water.png"));
             tile[2].collision = true;
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/door.png"));
-            tile[3].collision = true;
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/key.png"));
-            tile[4].collision = true;
-            /*
-             * tile[5] = new Tile();
-             * tile[5].image =
-             * ImageIO.read(getClass().getResourceAsStream("/res/tiles/flag.png"));
-             * tile[5].collision = true;
-             */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,7 +73,11 @@ public final class TileManager {
                 int worldY = row * gp.tileSize;
                 int drawX = worldX - cameraX;
                 int drawY = worldY - cameraY;
-                g2.drawImage(tile[mapTileNum[col][row]].image, drawX, drawY, gp.tileSize, gp.tileSize, null);
+                int tileIndex = mapTileNum[col][row];
+                if (tileIndex >= 0 && tileIndex < tile.length && tile[tileIndex] != null
+                        && tile[tileIndex].image != null) {
+                    g2.drawImage(tile[tileIndex].image, drawX, drawY, gp.tileSize, gp.tileSize, null);
+                }
             }
         }
     }
@@ -94,21 +86,19 @@ public final class TileManager {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            int col = 0;
             int row = 0;
-            while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+            while (row < gp.maxWorldRow) {
                 String line = br.readLine();
-                while (col < gp.maxWorldCol) {
-                    String[] numbers = line.split(";");
+                if (line == null)
+                    break;
+                String[] numbers = line.split(";");
+                for (int col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
-                    col++;
                 }
-                if (col == gp.maxWorldCol) {
-                    col = 0;
-                    row++;
-                }
+                row++;
             }
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
