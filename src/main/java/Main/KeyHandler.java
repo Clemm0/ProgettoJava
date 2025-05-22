@@ -1,7 +1,10 @@
 package Main;
 
+
+// Classe che gestisce l'input da tastiera
 public class KeyHandler implements java.awt.event.KeyListener {
 
+    // Variabili booleane per tracciare lo stato dei tasti premuti
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean undoPressed, restartPressed;
     public boolean escapePressed = false;
@@ -10,10 +13,12 @@ public class KeyHandler implements java.awt.event.KeyListener {
     public void keyTyped(java.awt.event.KeyEvent e) {
     }
 
+    // Metodo chiamato quando un tasto viene premuto
     @Override
     public void keyPressed(java.awt.event.KeyEvent e) {
         int code = e.getKeyCode();
 
+        // Verifica quale tasto è stato premuto e imposta la variabile corrispondente a true
         if (code == java.awt.event.KeyEvent.VK_W)
             upPressed = true;
         if (code == java.awt.event.KeyEvent.VK_A)
@@ -30,10 +35,12 @@ public class KeyHandler implements java.awt.event.KeyListener {
             escapePressed = true;
     }
 
+    // Metodo chiamato quando un tasto viene rilasciato
     @Override
     public void keyReleased(java.awt.event.KeyEvent e) {
         int code = e.getKeyCode();
 
+        // Verifica quale tasto è stato rilasciato e imposta la variabile corrispondente a false
         if (code == java.awt.event.KeyEvent.VK_W)
             upPressed = false;
         if (code == java.awt.event.KeyEvent.VK_A)

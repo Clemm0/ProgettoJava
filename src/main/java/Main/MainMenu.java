@@ -1,5 +1,7 @@
 package Main;
 
+
+// Importazione delle classi necessarie per GUI, eventi e componenti
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -28,8 +30,10 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+// Classe principale del menu, estende JFrame per creare una finestra
 public class MainMenu extends JFrame {
 
+    // Layout e componenti principali del menu
     private CardLayout cardLayout;
     private JPanel cardPanel;
     private JSlider volumeSlider;
@@ -37,7 +41,7 @@ public class MainMenu extends JFrame {
     private final Font retroFont = new Font("Monospaced", Font.BOLD, 18);
     private final Color fgColor = new Color(0, 255, 0);
 
-    // Main Menu del gioco
+    // Costruttore del menu principale
     public MainMenu() {
         setTitle("Game Main Menu");
         setSize(800, 550);
@@ -48,13 +52,14 @@ public class MainMenu extends JFrame {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
+        // Aggiunta del pannello principale
         cardPanel.add(createMainMenuPanel(), "main");
 
         add(cardPanel);
         setVisible(true);
     }
 
-    // Pannello per il menu principale
+    // Metodo per creare il pannello del menu principale
     private JPanel createMainMenuPanel() {
         JPanel panel = new JPanel(null) {
             protected void paintComponent(Graphics g) {
@@ -63,6 +68,7 @@ public class MainMenu extends JFrame {
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+
         // Titolo del gioco
         JLabel title = new JLabel("Mystic Fur-Venture", JLabel.CENTER);
         title.setFont(new Font("Monospaced", Font.BOLD, 48));
@@ -96,6 +102,7 @@ public class MainMenu extends JFrame {
         return panel;
     }
 
+    // Crea bottoni con stile personalizzato
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(retroFont);
@@ -119,6 +126,7 @@ public class MainMenu extends JFrame {
         return button;
     }
 
+    // Metodo per avviare il gioco
     private void startGame() {
         if (selectedCharacter == null) {
             JOptionPane.showMessageDialog(this, "Please select a character first.");
@@ -140,6 +148,7 @@ public class MainMenu extends JFrame {
         }
     }
 
+    // Mostra la finestra di selezione del personaggio
     private void showCharacterSelector() {
         JDialog selectorDialog = new JDialog(this, "Select Your Character", true);
         selectorDialog.setUndecorated(true);
@@ -154,9 +163,9 @@ public class MainMenu extends JFrame {
         String[] characters = { "Cat", "Fox", "FoxFire", "WIP" };
         HashMap<String, JPanel> panelMap = new HashMap<>();
 
-        // Use a temporary variable to track selection in the dialog
         final String[] tempSelected = { selectedCharacter };
 
+        // Aggiunge ogni personaggio come opzione cliccabile
         for (String name : characters) {
             JPanel p = new JPanel();
             p.setPreferredSize(new Dimension(100, 120));
@@ -185,11 +194,13 @@ public class MainMenu extends JFrame {
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+             // Aggiunta dei componenti al pannello del personaggio
             p.add(Box.createVerticalStrut(10));
             p.add(imgLabel);
             p.add(Box.createVerticalStrut(5));
             p.add(nameLabel);
 
+            // Clic su un personaggio cambia la selezione
             p.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     tempSelected[0] = name;
@@ -205,12 +216,14 @@ public class MainMenu extends JFrame {
             charPanel.add(p);
         }
 
+        // ScrollPane per il pannello dei personaggi
         JScrollPane scrollPane = new JScrollPane(charPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setPreferredSize(new Dimension(700, 150));
 
+        // Bottone per confermare la selezione
         JButton confirmButton = new JButton("Confirm");
         confirmButton.setFont(retroFont);
         confirmButton.setBackground(new Color(180, 255, 180));
@@ -225,11 +238,13 @@ public class MainMenu extends JFrame {
         bottom.setBackground(new Color(30, 30, 30));
         bottom.add(confirmButton);
 
+        // Aggiunta dei componenti alla finestra di dialogo
         selectorDialog.add(scrollPane, BorderLayout.CENTER);
         selectorDialog.add(bottom, BorderLayout.SOUTH);
         selectorDialog.setVisible(true);
     }
 
+    // Punto di ingresso del programma
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainMenu::new);
     }

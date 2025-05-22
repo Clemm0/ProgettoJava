@@ -11,6 +11,7 @@ import Main.KeyHandler;
 import Main.Setting;
 import object.SuperObject;
 
+// Classe che rappresenta il giocatore principale
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
@@ -20,11 +21,14 @@ public class Player extends Entity {
     public String name;
     Image image = null;
 
+    // Coordinate del giocatore sullo schermo
     public final int screenX;
     public final int screenY;
 
+    // Coordinate di destinazione per il movimento a passo
     private int targetX, targetY;
 
+    // Costruttore del giocatore, inizializza sprite, posizione e area di collisione
     public Player(GamePanel gp, KeyHandler keyH) {
         this.name = GamePanel.selectedCharacter;
         this.gp = gp;
@@ -44,6 +48,7 @@ public class Player extends Entity {
         targetY = worldY;
     }
 
+    // Imposta la posizione iniziale e la direzione del giocatore
     public void setDefaultValues() {
         worldX = gp.tileSize * 7;
         worldY = gp.tileSize * 7;
@@ -51,6 +56,7 @@ public class Player extends Entity {
         direction = "right";
     }
 
+    // Carica le immagini di animazione in base al personaggio selezionato
     public void getPlayerImage() {
         try {
             // LEFT (5 frames)
@@ -80,6 +86,7 @@ public class Player extends Entity {
         }
     }
 
+     // Metodo chiamato ogni frame per aggiornare lo stato del giocatore
     public void update() {
         if (keyH.escapePressed) {
             keyH.escapePressed = false;
@@ -91,6 +98,7 @@ public class Player extends Entity {
             int nextX = worldX;
             int nextY = worldY;
 
+             // Gestisce l’input del movimento e imposta la direzione
             if (keyH.upPressed) {
                 direction = "up";
                 nextY -= gp.tileSize;
@@ -109,6 +117,7 @@ public class Player extends Entity {
                 gp.playSE(3);
             }
 
+            // Controllo collisioni e presenza oggetti
             if (nextX != worldX || nextY != worldY) {
                 collisionOn = false;
                 int oldX = worldX, oldY = worldY;
@@ -138,12 +147,14 @@ public class Player extends Entity {
                     }
                 }
 
+                // Se possibile, muove il giocatore
                 if (canMovePlayer) {
                     targetX = nextX;
                     targetY = nextY;
                     moving = true;
                 }
 
+                // Resetta l’input dopo il movimento
                 keyH.upPressed = keyH.downPressed = keyH.leftPressed = keyH.rightPressed = false;
             } else {
                 standCounter++;
@@ -154,6 +165,7 @@ public class Player extends Entity {
             }
         }
 
+        // Gestione dell’animazione mentre il giocatore si muove
         if (moving) {
             spriteCounter++;
             if (spriteCounter > 10) {
@@ -166,6 +178,7 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
 
+            // Aggiorna la posizione in base alla destinazione
             if (worldX < targetX) {
                 worldX += speed;
                 if (worldX > targetX) worldX = targetX;
@@ -188,6 +201,7 @@ public class Player extends Entity {
         }
     }
 
+     // Controlla se il giocatore può muoversi in una certa posizione
     private boolean canMoveTo(int nextX, int nextY) {
         if (nextX < 0 || nextY < 0 ||
                 nextX > gp.maxWorldSize - gp.tileSize ||
@@ -197,6 +211,7 @@ public class Player extends Entity {
         return true;
     }
 
+     // Tenta di spingere un oggetto (es. la chiave) se possibile
     private boolean tryPushObject(int i) {
         if (gp.obj[i] == null) return false;
 
@@ -206,6 +221,8 @@ public class Player extends Entity {
             case "Key" -> {
                 int keyX = gp.obj[i].worldX;
                 int keyY = gp.obj[i].worldY;
+                
+                // Sposta l’oggetto nella direzione giusta
                 switch (direction) {
                     case "up" -> keyY -= gp.tileSize;
                     case "down" -> keyY += gp.tileSize;
@@ -213,6 +230,7 @@ public class Player extends Entity {
                     case "right" -> keyX += gp.tileSize;
                 }
 
+                 // Controlli su collisioni, confini e oggetti sovrapposti
                 int tileCol = keyX / gp.tileSize;
                 int tileRow = keyY / gp.tileSize;
 
@@ -233,6 +251,7 @@ public class Player extends Entity {
                     }
                 }
 
+                // Se è possibile spingere, aggiorna la posizione dell’oggetto
                 if (canMove && !occupied) {
                     gp.obj[i].worldX = keyX;
                     gp.obj[i].worldY = keyY;
@@ -250,6 +269,7 @@ public class Player extends Entity {
                 return false;
             }
             case "Flag" -> {
+                 // Passaggio al livello successivo
                 gp.playSE(1);
                 level++;
                 try {
@@ -266,10 +286,12 @@ public class Player extends Entity {
         }
     }
 
+    // Mostra il menu di pausa
     private void showPauseMenu() {
         new Setting();
     }
 
+        // Disegna il giocatore sullo schermo in base alla direzione e al frame
         public void draw(Graphics2D g2, int cameraX, int cameraY) 
         {
         int screenX = this.worldX - cameraX;

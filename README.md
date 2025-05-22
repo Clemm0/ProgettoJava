@@ -24,6 +24,9 @@
 - **[Clemm0]**  
   - Problemi di lavoro hanno portato a riscrivere metà dei file, sperando in un funzionamento migliore.
 
+- **[GabrielBini07]**
+ - Realizzazione delle prime immagini (Dimensioni troppo grandi [256x240] e quindi si passa a 64x64)
+
 ### 14/05
 - **[Clemm0]**  
   - Aggiunta dei file revisionati.
@@ -46,7 +49,7 @@
   - Sistemati problemi con gli assert dove rimanevano alcuni blocchi vuoti senza che si caricavano
 
 - **[GabrielBini07]**
-  - Realizzazione dell'immagine della chiave e della porta
+  - Realizzazione dell'immagine della chiave, della porta, della bandiera e dell'acqua
 
 ### 21/05
 - **[GabrielBini07]**
@@ -60,7 +63,7 @@
 
 ### 22/05
 - **[GabrielBini07]**
-  - Aggiunta dei commenti nelle parti principali del codice
+  - Aggiunta dei commenti nelle parti principali del codice per la spiegazione di ciò che svolgono
   - Implementazione di un altro personaggio (con animazioni verso tutte le direzioni)
   - Implementazione del muro 
 

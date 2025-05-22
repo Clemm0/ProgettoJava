@@ -9,21 +9,32 @@ import entity.Player;
 import object.SuperObject;
 
 public class GamePanel extends JPanel implements Runnable {
+
+    // Dimensioni originali e scala per i tile
     final int originalSize = 16;
     final int scale = 4;
     public static int Size = 64;
     public final int tileSize = originalSize * scale;
+
+    // Dimensioni dello schermo in tile (colonne e righe)
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
+
+    // Dimensioni dello schermo in pixel
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
+
+    // Frames per second (FPS) da impostazioni esterne
     public int FPS = Setting.getCurrentFPS();
     public static boolean optionState;
+
+    // Dimensioni del mondo di gioco
     public final int maxWorldCol = maxScreenCol;
     public final int maxWorldRow = maxScreenRow;
     public final int maxWorldSize = tileSize * maxWorldCol;
     public final int maxWorldHeight = tileSize * maxWorldRow;
 
+    // Manager per il disegno dei tile
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
@@ -39,11 +50,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     private int drawCount = 0;
 
-    // Add your logic block and map references here
+    // Riferimenti alla logica e mappa (modulo Way2Logic)
     public Way2Logic.Logic.Is isBlock;
     public String[][] map;
     public int isX, isY;
 
+    // Costruttore che imposta la dimensione del pannello e inizializza il player
     public GamePanel(String selectedCharacter) {
         GamePanel.selectedCharacter = selectedCharacter.toLowerCase();
         this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
@@ -55,16 +67,19 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyH);
     }
 
+    // Metodo per inizializzare il gioco
     public void setupGame() {
         aSetter.setObject();
         playMusic(0);
     }
 
+    // Avvia il thread di gioco che gestisce il ciclo principale
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    // Ciclo principale di gioco eseguito dal thread
     @Override
     public void run() {
         double delta = 0;
@@ -92,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    // Aggiorna tutti gli elementi del gioco
     public void update() {
         player.update();
         for (SuperObject o : obj) {
@@ -105,6 +121,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    // Metodo di disegno chiamato automaticamente da repaint()
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
@@ -129,21 +146,25 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    // Riproduce la musica di sottofondo specificata dall'indice
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
 
+    // Ferma la musica di sottofondo
     public void stopMusic() {
         music.stop();
     }
 
+    // Riproduce un effetto sonoro specificato dall'indice
     public void playSE(int i) {
         se.setFile(i);
         se.play();
     }
 
+    // Restituisce gli FPS attuali dalle impostazioni
     public int getFPS() {
         return Setting.getCurrentFPS();
     }
