@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
+
 //Implementazione delle impostazioni per il gioco 
 public class Setting extends JFrame {
     private static final String SETTINGS_FILE = "Setting.ser";
@@ -58,7 +59,7 @@ public class Setting extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(fgColor);
         title.setFont(retroFont);
-        //Menu di pausa
+        // Menu di pausa
         JButton resumeBtn = new JButton("Resume");
         JButton quitBtn = new JButton("Quit");
         JButton settingsBtn = new JButton("Settings");
@@ -197,7 +198,7 @@ public class Setting extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(fgColor);
         title.setFont(retroFont);
-        //Volume 
+        // Volume
         JLabel[] labels = {
                 new JLabel("General"),
                 new JLabel("SFX"),
@@ -303,7 +304,6 @@ public class Setting extends JFrame {
             saveSettings();
         });
 
-        int[] fpsValues = { 30, 40, 60, 90, 120, 150, 240 };
         String[] fpsLabels = { "30", "40", "60", "90", "120", "150", "Unlimited" };
         final int[] fpsIndex = { settings.fpsIndex };
 
@@ -314,7 +314,6 @@ public class Setting extends JFrame {
         JLabel fpsValue = new JLabel(fpsLabels[fpsIndex[0]]);
         fpsValue.setForeground(fgColor);
         fpsValue.setFont(retroFont.deriveFont(Font.PLAIN, 14));
-
         JButton minusBtn = new JButton("<");
         JButton plusBtn = new JButton(">");
 
@@ -420,5 +419,24 @@ public class Setting extends JFrame {
         public int musicVolume = 50;
         public boolean fullscreen = false;
         public int fpsIndex = 2;
+    }
+
+    public static int getCurrentFPS() {
+        int[] fpsValues = { 30, 40, 60, 90, 120, 150, 240 };
+        SettingsData settings = loadSettingsStatic();
+        return fpsValues[settings.fpsIndex];
+    }
+
+    private static SettingsData loadSettingsStatic() {
+        File file = new File(SETTINGS_FILE);
+        if (file.exists()) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+                return (SettingsData) in.readObject();
+            } catch (Exception e) {
+                return new SettingsData();
+            }
+        } else {
+            return new SettingsData();
+        }
     }
 }

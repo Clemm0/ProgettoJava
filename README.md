@@ -67,5 +67,5 @@
 - **[Clemm0]**
   - Aggiunta la scelta personaggio
   - Aggiunta personaggi
-  
+  - Implementazione FPS
 ---

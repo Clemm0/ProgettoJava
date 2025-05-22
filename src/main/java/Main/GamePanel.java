@@ -16,12 +16,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
-    final int FPS = 60;
+    public int FPS = Setting.getCurrentFPS();
     public static boolean optionState;
     public final int maxWorldCol = maxScreenCol;
     public final int maxWorldRow = maxScreenRow;
     public final int maxWorldSize = tileSize * maxWorldCol;
     public final int maxWorldHeight = tileSize * maxWorldRow;
+    private int frameCounter = 0;
+    private final int switchFrames = 30;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
@@ -35,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     Sound music = new Sound();
     Sound se = new Sound();
+
+    private int drawCount = 0;
 
     public GamePanel(String selectedCharacter) {
         GamePanel.selectedCharacter = selectedCharacter.toLowerCase();
@@ -59,13 +63,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        int drawCount = 0;
         while (gameThread != null) {
+            // Always get the latest FPS value
+            int currentFPS = getFPS();
+            double drawInterval = 1000000000.0 / currentFPS;
+
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
@@ -77,7 +83,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -86,6 +91,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        for (SuperObject o : obj) {
+            if (o != null) {
+                o.update();
+            }
+        }
     }
 
     @Override
@@ -125,5 +135,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSE(int i) {
         se.setFile(i);
         se.play();
+    }
+
+    public int getFPS() {
+        return Setting.getCurrentFPS();
     }
 }
