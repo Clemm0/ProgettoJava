@@ -38,8 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public static String selectedCharacter;
-    public Player player;
+    public Player player = new Player(this, keyH, "fox");
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     public AssetSetter aSetter = new AssetSetter(this);
@@ -63,8 +62,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-
-        player = new Player(this, keyH);
     }
 
     // Metodo per inizializzare il gioco
@@ -127,20 +124,25 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        // Center the camera on the player
         int cameraX = player.worldX - screenWidth / 2 + tileSize / 2;
         int cameraY = player.worldY - screenHeight / 2 + tileSize / 2;
 
+        // Clamp camera so it doesn't show outside the map
         cameraX = Math.max(0, Math.min(cameraX, maxWorldSize - screenWidth));
         cameraY = Math.max(0, Math.min(cameraY, maxWorldHeight - screenHeight));
 
+        // Draw tiles
         tileM.draw(g2, cameraX, cameraY);
 
+        // Draw objects
         for (SuperObject obj1 : obj) {
             if (obj1 != null) {
                 obj1.draw(g2, this, cameraX, cameraY);
             }
         }
 
+        // Draw player
         player.draw(g2, cameraX, cameraY);
 
         g2.dispose();
