@@ -119,7 +119,7 @@ public class MainMenu extends JFrame {
 
     private void startGame() {
         if (selectedCharacter == null) {
-            //M
+            
             JOptionPane.showMessageDialog(this, "Please select a character first.");
         } else {
             JOptionPane.showMessageDialog(this, "Starting game with: " + selectedCharacter);
