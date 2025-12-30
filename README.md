@@ -69,4 +69,9 @@
   - Aggiunta la scelta personaggio
   - Aggiunta personaggi
   - Implementazione FPS
+
+### 30/12
+- **[Clemm0]**
+  - Non funziona più niente arrivederci
+  - Niente più update
 ---
